@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { User } from '../model/user';
-import { FilterDate } from '../model/DateFilter';
+import { DateFilter } from '../model/DateFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class UserService
     private currentUserObservable: BehaviorSubject<User> = new BehaviorSubject<User>(
                                                                 { id: 0, username: "", name: "", email: "" }
                                                             );
-    private currentFilterDateObservable: BehaviorSubject<FilterDate> = new BehaviorSubject<FilterDate>(
+    private currentFilterDateObservable: BehaviorSubject<DateFilter> = new BehaviorSubject<DateFilter>(
                                                                         {
                                                                             year: new Date().getFullYear(),
                                                                             month: new Date().getMonth(),
@@ -30,7 +30,7 @@ export class UserService
 
     public getUserArrayObservable(): BehaviorSubject<Array<User>> { return this.userArrayObservable; }
     public getCurrentUserObservable(): BehaviorSubject<User> { return this.currentUserObservable; }
-    public getCurrentFilterDateObservable(): BehaviorSubject<FilterDate> { return this.currentFilterDateObservable; }
+    public getCurrentFilterDateObservable(): BehaviorSubject<DateFilter> { return this.currentFilterDateObservable; }
 
     public fetchAllUsersFromServer(): void
     {
