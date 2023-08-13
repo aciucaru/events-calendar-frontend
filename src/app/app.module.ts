@@ -8,8 +8,6 @@ import { MainUiComponent } from './ui/main-ui.component';
 import { TopToolbarComponent } from './ui/top-toolbar.component';
 import { UserSelectorComponent } from './ui/user-selector.component';
 
-//PrimeNG modules:
-import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -21,10 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-
-    // PrimeNG modules
-    DropdownModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

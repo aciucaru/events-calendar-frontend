@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { DropdownModule } from 'primeng/dropdown';
+import { Component, OnInit } from '@angular/core';
 
 
 
@@ -7,28 +6,33 @@ import { DropdownModule } from 'primeng/dropdown';
   selector: 'user-selector',
   template: `
     <div class="main-container">
-        <p-dropdown [options]="cities"
-            [ngModel]="selectedCity"
-            (ngModel)="selectedCity($event)"
-            optionLabel="name">
-        </p-dropdown>
-        <!-- <p-dropdown [options]="cities" optionLabel="name"></p-dropdown> -->
+        <select #userSelect class="col-info-select" [value]="selectedCity"
+            (change)="selectUser(userSelect.value)">
+            <option value="string">string</option>
+            <option value="number">number</option>
+            <option value="bool">bool</option>
+        </select>
     </div>
   `,
   styles: []
 })
-export class UserSelectorComponent
+export class UserSelectorComponent implements OnInit
 {
-    public cities: Array<string> =
-    [
-        "New York",
-        "Paris",
-        "Madrid"
-    ];
+    public cities: Array<string> = [];
 
     public selectedCity: any;
 
-    public selecetdCity(event: any)
+    public ngOnInit(): void
+    {
+        this.cities =
+        [
+            "New York",
+            "Paris",
+            "Madrid"
+        ];
+    }
+
+    public selectUser(event: any)
     {
         console.log("dropdown");
     }
