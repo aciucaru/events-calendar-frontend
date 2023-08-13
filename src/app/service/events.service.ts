@@ -9,6 +9,8 @@ import { MeetingAppointment } from '../model/meeting-appointment';
 import { Invitation } from '../model/invitation';
 import { OutOfOfficeEvent } from '../model/out-of-office-event';
 import { User } from '../model/user';
+import { DateService } from './date.service';
+import { DateFilter } from '../model/date-filter';
 
 
 @Injectable({
@@ -17,6 +19,13 @@ import { User } from '../model/user';
 export class EventsService
 {
     private currentUser: User = { id: 0, username: "", name: "", email: "" };
+    private dateFilter: DateFilter =
+    {
+        year: new Date().getFullYear(),
+        month: new Date().getMonth(),
+        startDate: new Date(),
+        endDate: new Date()
+    };
 
     /* reusable buffer array for the corresponding BehaviorSubject, so that no new array is created everytime
     the BehaviorSubject needs to ghange and needs a new array; this array is reused and has a initial capacity
@@ -37,10 +46,14 @@ export class EventsService
     private outOfOfficeEventArrayObservable: BehaviorSubject<Array<OutOfOfficeEvent>>
                                 = new BehaviorSubject<Array<OutOfOfficeEvent>>(new Array<OutOfOfficeEvent>());
 
-    constructor(private httpClient: HttpClient, protected userService: UserService)
+    constructor(private httpClient: HttpClient,
+                protected userService: UserService,
+                protected dateService: DateService)
     {
         this.userService.getCurrentUserObservable()
                         .subscribe( (currentUser: User) => { this.currentUser = currentUser; } );
+
+        this.dateService.getCurrentDateFilterObservable();
     }
 
     public getHostedAppointmentArrayObservable(): BehaviorSubject<Array<MeetingAppointment>>
