@@ -15,14 +15,7 @@ export class UserService
     private currentUserObservable: BehaviorSubject<User> = new BehaviorSubject<User>(
                                                                 { id: 0, username: "", name: "", email: "" }
                                                             );
-    private currentFilterDateObservable: BehaviorSubject<DateFilter> = new BehaviorSubject<DateFilter>(
-                                                                        {
-                                                                            year: new Date().getFullYear(),
-                                                                            month: new Date().getMonth(),
-                                                                            startDate: new Date(),
-                                                                            endDate: new Date()
-                                                                        }
-                                                                    );
+
     constructor(private httpClient: HttpClient)
     {
         this.fetchAllUsersFromServer();
@@ -30,7 +23,6 @@ export class UserService
 
     public getUserArrayObservable(): BehaviorSubject<Array<User>> { return this.userArrayObservable; }
     public getCurrentUserObservable(): BehaviorSubject<User> { return this.currentUserObservable; }
-    public getCurrentFilterDateObservable(): BehaviorSubject<DateFilter> { return this.currentFilterDateObservable; }
 
     public fetchAllUsersFromServer(): void
     {
