@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { DateFilter } from '../model/DateFilter';
+import { DateFilter } from '../model/date-filter';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +20,5 @@ export class DateService
 
     constructor() { }
 
-    public getCurrentFilterDateObservable(): BehaviorSubject<DateFilter> { return this.currentFilterDateObservable; }
+    public getCurrentDateFilterObservable(): BehaviorSubject<DateFilter> { return this.currentFilterDateObservable; }
 }
