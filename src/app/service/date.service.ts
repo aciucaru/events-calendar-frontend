@@ -9,7 +9,7 @@ import { DateFilter } from '../model/date-filter';
 })
 export class DateService
 {
-    private currentFilterDateObservable: BehaviorSubject<DateFilter> = new BehaviorSubject<DateFilter>(
+    private currentDateFilterObservable: BehaviorSubject<DateFilter> = new BehaviorSubject<DateFilter>(
                                                                                 {
                                                                                     year: new Date().getFullYear(),
                                                                                     month: new Date().getMonth(),
@@ -20,5 +20,13 @@ export class DateService
 
     constructor() { }
 
-    public getCurrentDateFilterObservable(): BehaviorSubject<DateFilter> { return this.currentFilterDateObservable; }
+    public getCurrentDateFilterObservable(): BehaviorSubject<DateFilter> { return this.currentDateFilterObservable; }
+
+    public setDateFilter(dateFilter: DateFilter): void
+    {
+        if(dateFilter != null)
+            this.currentDateFilterObservable.next(dateFilter);
+    }
+
+
 }
