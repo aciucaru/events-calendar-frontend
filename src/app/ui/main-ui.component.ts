@@ -4,14 +4,11 @@ import { Component } from '@angular/core';
   selector: 'main-ui',
   template: `
     <div class="main-container">
-        Main UI
+        <top-toolbar></top-toolbar>
     </div>
   `,
   styles: [],
-  styleUrls:
-  [
-      './main-ui.scss'
-  ]
+  styleUrls: ['./main-ui.component.scss']
 })
 export class MainUiComponent
 {
