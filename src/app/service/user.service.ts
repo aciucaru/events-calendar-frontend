@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { User } from '../model/user';
+
 import { BehaviorSubject, Subscription } from 'rxjs';
+
+import { User } from '../model/user';
 import { FilterDate } from '../model/DateFilter';
 
 @Injectable({
