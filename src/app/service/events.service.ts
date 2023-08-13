@@ -31,5 +31,12 @@ export class EventsService
 
     constructor(private httpClient: HttpClient) { }
 
+    public getHostedAppointmentArrayObservable(): BehaviorSubject<Array<MeetingAppointment>>
+    { return this.hostedAppointmentArrayObservable; }
 
+    public getInvitationArrayObservable(): BehaviorSubject<Array<Invitation>>
+    { return this.invitationArrayObservable }
+
+    public getOutOfOfficeEventArrayObservable(): BehaviorSubject<Array<OutOfOfficeEvent>>
+    { return this.outOfOfficeEventArrayObservable; }
 }
