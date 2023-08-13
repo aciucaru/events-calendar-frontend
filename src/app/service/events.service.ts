@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 import { BehaviorSubject } from 'rxjs';
+
+import { UserService } from './user.service';
+
 import { MeetingAppointment } from '../model/meeting-appointment';
 import { Invitation } from '../model/invitation';
 import { OutOfOfficeEvent } from '../model/out-of-office-event';
-import { UserService } from './user.service';
 import { User } from '../model/user';
+
 
 @Injectable({
   providedIn: 'root'
