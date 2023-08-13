@@ -19,6 +19,7 @@ import { DateFilter } from '../model/date-filter';
 export class EventsService
 {
     private currentUser: User = { id: 0, username: "", name: "", email: "" };
+
     private dateFilter: DateFilter =
     {
         year: new Date().getFullYear(),
@@ -53,7 +54,8 @@ export class EventsService
         this.userService.getCurrentUserObservable()
                         .subscribe( (currentUser: User) => { this.currentUser = currentUser; } );
 
-        this.dateService.getCurrentDateFilterObservable();
+        this.dateService.getDateFilterObservable()
+                        .subscribe( (dateFilter: DateFilter) => { this.dateFilter = dateFilter; } );
     }
 
     public getHostedAppointmentArrayObservable(): BehaviorSubject<Array<MeetingAppointment>>
