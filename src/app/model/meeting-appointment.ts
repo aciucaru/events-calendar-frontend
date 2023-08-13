@@ -1,3 +1,5 @@
+import { MeetingEvent } from "./meeting-event";
+
 export interface MeetingAppointment
 {
     id: number;
@@ -5,4 +7,5 @@ export interface MeetingAppointment
     active: boolean;
     start: Date;
     end: Date;
+    meeting_event: MeetingEvent;
 }
