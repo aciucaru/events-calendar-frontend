@@ -7,9 +7,10 @@ import { Component } from '@angular/core';
       date-selector works!
     </p>
   `,
-  styles: [
-  ]
+  styles: [],
+  styleUrls: ['./date-selector.component.scss']
 })
-export class DateSelectorComponent {
-
+export class DateSelectorComponent
+{
+    
 }
