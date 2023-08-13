@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { MainUiComponent } from './ui/main-ui.component';
 import { TopToolbarComponent } from './ui/top-toolbar.component';
 import { UserSelectorComponent } from './ui/user-selector.component';
+import { DateSelectorComponent } from './ui/date-selector.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { UserSelectorComponent } from './ui/user-selector.component';
     MainUiComponent,
     TopToolbarComponent,
     UserSelectorComponent,
+    DateSelectorComponent,
   ],
   imports: [
     BrowserModule,
