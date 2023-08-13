@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
+import { UserService } from '../service/user.service';
+import { User } from '../model/user';
 
 
 @Component({
   selector: 'user-selector',
   template: `
     <div class="main-container">
-        <select #userSelect class="col-info-select" [value]="selectedCity"
-            (change)="selectUser(userSelect.value)">
-            <option value="string">string</option>
-            <option value="number">number</option>
-            <option value="bool">bool</option>
+        <label for="user-select">User: {{currentUser.name}}</label>
+        <select #citySelect class="col-info-select" name="user-select"
+            (change)="selectUser($event)">
+            <option *ngFor="let user of users; let i=index">{{user.email}}</option>
         </select>
     </div>
   `,
@@ -19,21 +20,23 @@ import { Component, OnInit } from '@angular/core';
 export class UserSelectorComponent implements OnInit
 {
     public cities: Array<string> = [];
+    public users: Array<User> = [];
+    public currentUser: User = { id: 0, username: "", name: "", email: "" };
 
-    public selectedCity: any;
+    public constructor(protected userService: UserService) {}
 
     public ngOnInit(): void
     {
-        this.cities =
-        [
-            "New York",
-            "Paris",
-            "Madrid"
-        ];
+        this.userService.getUserArrayObservable()
+                        .subscribe( (users: Array<User>) => { this.users = users; } );
+
+        this.userService.getCurrentUserObservable()
+                        .subscribe( (currentUser: User) => { this.currentUser = currentUser;} );
     }
 
     public selectUser(event: any)
     {
-        console.log("dropdown");
+        this.userService.setCurrentUser(this.users[event.target['selectedIndex']])
+        console.log(event.target['selectedIndex']);
     }
 }
