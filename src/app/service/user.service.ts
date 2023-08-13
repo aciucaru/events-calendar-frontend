@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { User } from '../model/user';
-import { DateFilter } from '../model/DateFilter';
+import { DateFilter } from '../model/date-filter';
 
 @Injectable({
   providedIn: 'root'
