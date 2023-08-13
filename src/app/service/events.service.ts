@@ -4,12 +4,16 @@ import { BehaviorSubject } from 'rxjs';
 import { MeetingAppointment } from '../model/meeting-appointment';
 import { Invitation } from '../model/invitation';
 import { OutOfOfficeEvent } from '../model/out-of-office-event';
+import { UserService } from './user.service';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventsService
 {
+    private currentUser: User = { id: 0, username: "", name: "", email: "" };
+
     /* reusable buffer array for the corresponding BehaviorSubject, so that no new array is created everytime
     the BehaviorSubject needs to ghange and needs a new array; this array is reused and has a initial capacity
     of 5 weeks * 5 days/week x 8 hours/day x 4 hosted appointments/hour*/
@@ -29,7 +33,11 @@ export class EventsService
     private outOfOfficeEventArrayObservable: BehaviorSubject<Array<OutOfOfficeEvent>>
                                 = new BehaviorSubject<Array<OutOfOfficeEvent>>(new Array<OutOfOfficeEvent>());
 
-    constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient, protected userService: UserService)
+    {
+        this.userService.getCurrentUserObservable()
+                        .subscribe( (currentUser: User) => { this.currentUser = currentUser; } );
+    }
 
     public getHostedAppointmentArrayObservable(): BehaviorSubject<Array<MeetingAppointment>>
     { return this.hostedAppointmentArrayObservable; }
