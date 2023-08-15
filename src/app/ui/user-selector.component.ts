@@ -8,8 +8,8 @@ import { User } from '../model/user';
   selector: 'user-selector',
   template: `
     <div class="main-container">
-        <label for="user-select">User: {{currentUser.name}}</label>
-        <select #citySelect class="col-info-select" name="user-select"
+        <label for="user-select">User {{currentUser.name}}</label>
+        <select #userSelect name="user-select" class="user-select" 
             (change)="selectUser($event)">
             <option *ngFor="let user of users; let i=index">{{user.email}}</option>
         </select>
@@ -21,7 +21,7 @@ export class UserSelectorComponent implements OnInit
 {
     public cities: Array<string> = [];
     public users: Array<User> = [];
-    public currentUser: User = { id: 0, username: "", name: "", email: "" };
+    public currentUser: User = { id: 0, username: "", name: "Please select", email: "" };
 
     public constructor(protected userService: UserService) {}
 
