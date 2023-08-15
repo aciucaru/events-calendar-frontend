@@ -34,7 +34,7 @@ export class DateService
         {
             this.dateFilterObservable.next(dateFilter);
 
-            this.getWeekDateRanges(dateFilter.year, dateFilter.month);
+            this.setWeekDateRanges(dateFilter.year, dateFilter.month);
         }
 
     }
