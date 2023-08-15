@@ -10,7 +10,7 @@ import { DateFilter } from '../model/date-filter';
 export class DateService
 {
     private dateFilterObservable: BehaviorSubject<DateFilter>;
-    private weekDateRanges: Array<{weekStart: Date; weekEnd: Date;}>
+    private weekDateRanges: Array<{weekStart: Date; weekEnd: Date;}>;
 
     constructor()
     {
@@ -31,7 +31,12 @@ export class DateService
     public setDateFilter(dateFilter: DateFilter): void
     {
         if(dateFilter != null)
+        {
             this.dateFilterObservable.next(dateFilter);
+
+            this.getWeekDateRanges(dateFilter.year, dateFilter.month);
+        }
+
     }
 
     /* helper method that calculates the number of weeks in a scpecific month, from a specific year;
@@ -77,7 +82,7 @@ export class DateService
     /* Helper method that gererates the dates between the weeks of o month from a certain year.
     For each week, this method generates two dates: the date at the start of the week and the date
     at the end of the week. */
-    public getWeekDateRanges(year: number, month: number): Array<{weekStart: Date; weekEnd: Date;}>
+    private setWeekDateRanges(year: number, month: number): void
     {
         const numberOfWeeks = this.getWeekCount(year, month);
         const weekDatesArray: Array<{weekStart: Date, weekEnd: Date}>
@@ -122,7 +127,7 @@ export class DateService
 
         console.table(weekDatesArray);
 
-        return weekDatesArray;
+        this.weekDateRanges = weekDatesArray;
     }
 
 
