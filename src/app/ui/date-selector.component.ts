@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 import { EventsService } from '../service/events.service';
+import { DateService } from '../service/date.service';
 
 import { MeetingAppointment } from '../model/meeting-appointment';
 import { Invitation } from '../model/invitation';
 import { OutOfOfficeEvent } from '../model/out-of-office-event';
-import { DateService } from '../service/date.service';
 import { DateFilter } from '../model/date-filter';
 
 @Component({
@@ -50,7 +50,7 @@ export class DateSelectorComponent implements OnInit
 
     protected numberOfWeeksInCurrentnMonth: number = 0;
 
-    // private hostedAppointmentArray: Array<MeetingAppointment> = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
+
     // private invitationArray: Array<Invitation> = new Array<Invitation>(5 * 5 * 8 * 8)
     // private outOfOfficeEventArray: Array<OutOfOfficeEvent> = new Array<OutOfOfficeEvent>(5 * 5 * 4);
 
