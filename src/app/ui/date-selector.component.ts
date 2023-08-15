@@ -32,7 +32,8 @@ import { DateFilter } from '../model/date-filter';
         <label for="week-select">Week</label>
         <select #weekSelect name="week-select" class="week-select"
             (change)="selectWeek($event)">
-            <option *ngFor="let week of weekOptionArray; let weekIndex = index;" [value]="weekIndex">
+            <option *ngFor="let week of [].constructor(numberOfWeeksInCurrentnMonth).fill(1); let weekIndex = index;"
+            [value]="weekIndex">
                 Week {{weekIndex + 1}}
             </option>
         </select>
