@@ -1,1 +1,14 @@
+.main-container
+{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 10px;
 
+    padding: 10px;
+    margin: 0px;
+
+    border: solid 1px hsl(230, 20%, 25%);
+}
