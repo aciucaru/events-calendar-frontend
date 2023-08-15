@@ -71,6 +71,7 @@ export class EventsService
                             {
                                 this.currentUser = currentUser;
                                 this.fetchHostedAppointments();
+                                this.fetchInvitations();
                             }
                         );
 
@@ -79,6 +80,7 @@ export class EventsService
                             {
                                 this.dateFilter = dateFilter;
                                 this.fetchHostedAppointments();
+                                this.fetchInvitations();
                             }
                         );
     }
@@ -114,6 +116,33 @@ export class EventsService
                                 this.hostedAppointmentArrayObservable.next(appointments);
                                 console.log("appointments fetched");
                                 console.table(appointments);
+                            }
+                        );
+    }
+
+    public fetchInvitations(): void
+    {
+        const userId = this.currentUser.id;
+
+        const startDate = `${this.dateFilter.startDate.getFullYear()}`
+                            + `-${this.dateFilter.startDate.getMonth()+1}`
+                            + `-${this.dateFilter.startDate.getDate()}`;
+
+        const endDate = `${this.dateFilter.endDate.getFullYear()}`
+                        + `-${this.dateFilter.endDate.getMonth()+1}`
+                        + `-${this.dateFilter.endDate.getDate()}`;    
+
+        let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeInvitationsByDate`
+                        + `?startDate=${startDate}&endDate=${endDate}`;
+
+        this.httpClient.get<Array<Invitation>>(apiUrl)
+                        .pipe()
+                        .subscribe( (invitations: Array<Invitation>) =>
+                            {
+                                this.invitationArray = invitations;
+                                this.invitationArrayObservable.next(invitations);
+                                console.log("appointments fetched");
+                                console.table(invitations);
                             }
                         );
     }
