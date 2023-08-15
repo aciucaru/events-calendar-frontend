@@ -25,7 +25,9 @@ import { DateFilter } from '../model/date-filter';
         <select #monthSelect name="month-select" class="month-select"
             (change)="selectMonth($event)">
             <option *ngFor="let month of monthOptionArray; let monthIndex = index;"
-            [selected]="monthIndex === dateFilter.month">{{month}}</option>
+            [selected]="monthIndex === dateFilter.month-1">
+                {{month}}
+            </option>
         </select>
     </div>
   `,
@@ -57,6 +59,8 @@ export class DateSelectorComponent implements OnInit
         "December"
     ];
 
+    protected numberOfWeeksInCurrentnMonth = 0;
+
     // private hostedAppointmentArray: Array<MeetingAppointment> = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
     // private invitationArray: Array<Invitation> = new Array<Invitation>(5 * 5 * 8 * 8)
     // private outOfOfficeEventArray: Array<OutOfOfficeEvent> = new Array<OutOfOfficeEvent>(5 * 5 * 4);
@@ -65,13 +69,16 @@ export class DateSelectorComponent implements OnInit
 
     public ngOnInit(): void
     {
-        this.dateFilterService.getDateFilterObservable()
-                        .subscribe( (dateFilter: DateFilter) =>
-                                        {
-                                            this.dateFilter = dateFilter;
-                                            this.setYearOptionArray(new Date().getFullYear());
-                                        }
-                                    );
+        this.dateFilterService
+                .getDateFilterObservable()
+                .subscribe( (dateFilter: DateFilter) =>
+                                {
+                                    this.dateFilter = dateFilter;
+                                    this.setYearOptionArray(dateFilter.year);
+                                    this.numberOfWeeksInCurrentnMonth = this.dateFilterService
+                                                                            .getWeekCount(dateFilter.year, dateFilter.month);
+                                }
+                            );
                  
         // this.eventService.getHostedAppointmentArrayObservable()
         //                     .subscribe( (appointmentArray: Array<MeetingAppointment>) =>
@@ -110,7 +117,11 @@ export class DateSelectorComponent implements OnInit
         this.dateFilter.year = parseInt(target.value);
         this.dateFilterService.setDateFilter(this.dateFilter);
 
-        console.log(target.value);
+        this.numberOfWeeksInCurrentnMonth = this.dateFilterService
+                                                .getWeekCount(this.dateFilter.year, this.dateFilter.month);
+
+        console.log(`selected year: ${target.value}`);
+        console.log(`number of weeks: ${this.numberOfWeeksInCurrentnMonth}`);
     }
 
     public selectMonth(event: Event): void
@@ -123,6 +134,10 @@ export class DateSelectorComponent implements OnInit
         this.dateFilter.month = monthIndex;
         this.dateFilterService.setDateFilter(this.dateFilter);
 
-        console.log(monthIndex );
+        this.numberOfWeeksInCurrentnMonth = this.dateFilterService
+                                                .getWeekCount(this.dateFilter.year, this.dateFilter.month);
+
+        console.log(`selected month index: ${monthIndex}`);
+        console.log(`number of weeks: ${this.numberOfWeeksInCurrentnMonth}`);
     }
 }
