@@ -29,6 +29,14 @@ import { DateFilter } from '../model/date-filter';
                 {{month}}
             </option>
         </select>
+
+        <label for="week-select">Week</label>
+        <select #weekSelect name="week-select" class="week-select"
+            (change)="selectWeek($event)">
+            <option *ngFor="let week of weekOptionArray; let weekIndex = index;">
+                Week {{weekIndex}}
+            </option>
+        </select>
     </div>
   `,
   styles: [],
@@ -42,7 +50,9 @@ export class DateSelectorComponent implements OnInit
                                         startDate: new Date(),
                                         endDate: new Date()
                                     };
+
     protected yearOptionArray: Array<number> = new Array<number>(20);
+
     protected monthOptionArray: Array<string> =
     [
         "January",
@@ -59,7 +69,9 @@ export class DateSelectorComponent implements OnInit
         "December"
     ];
 
-    protected numberOfWeeksInCurrentnMonth = 0;
+    protected numberOfWeeksInCurrentnMonth: number = 0;
+    protected weekOptionArray: Array<{weekStart: Date; weekEnd: Date;}>
+                                = new Array<{weekStart: Date; weekEnd: Date;}>();
 
     // private hostedAppointmentArray: Array<MeetingAppointment> = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
     // private invitationArray: Array<Invitation> = new Array<Invitation>(5 * 5 * 8 * 8)
@@ -77,6 +89,8 @@ export class DateSelectorComponent implements OnInit
                                     this.setYearOptionArray(dateFilter.year);
                                     this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                                             .getWeekCount(dateFilter.year, dateFilter.month);
+                                    this.weekOptionArray = this.dateFilterService
+                                                                .getWeekDateRange(dateFilter.year, dateFilter.month);
                                 }
                             );
                  
@@ -120,6 +134,8 @@ export class DateSelectorComponent implements OnInit
         this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                 .getWeekCount(this.dateFilter.year, this.dateFilter.month);
 
+        this.weekOptionArray = this.dateFilterService.getWeekDateRange(this.dateFilter.year, this.dateFilter.month);
+
         console.log(`selected year: ${target.value}`);
         console.log(`number of weeks: ${this.numberOfWeeksInCurrentnMonth}`);
     }
@@ -137,7 +153,14 @@ export class DateSelectorComponent implements OnInit
         this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                 .getWeekCount(this.dateFilter.year, this.dateFilter.month);
 
+        this.weekOptionArray = this.dateFilterService.getWeekDateRange(this.dateFilter.year, this.dateFilter.month);
+
         console.log(`selected month index: ${monthIndex}`);
         console.log(`number of weeks: ${this.numberOfWeeksInCurrentnMonth}`);
+    }
+
+    public selectWeek(event: Event): void
+    {
+        const target = event.target as HTMLSelectElement;
     }
 }
