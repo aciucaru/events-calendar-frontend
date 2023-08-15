@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div class="main-container">
         <top-toolbar></top-toolbar>
+        <hosted-appointment-view></hosted-appointment-view>
     </div>
   `,
   styles: [],
