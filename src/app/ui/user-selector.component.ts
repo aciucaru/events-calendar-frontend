@@ -11,11 +11,12 @@ import { User } from '../model/user';
         <label for="user-select">User {{currentUser.name}}</label>
         <select #userSelect name="user-select" class="user-select" 
             (change)="selectUser($event)">
-            <option *ngFor="let user of users; let i=index">{{user.email}}</option>
+            <option *ngFor="let user of users; let i = index">{{user.email}}</option>
         </select>
     </div>
   `,
-  styles: []
+  styles: [],
+  styleUrls: ['./user-selector.component.scss']
 })
 export class UserSelectorComponent implements OnInit
 {
