@@ -67,10 +67,20 @@ export class EventsService
                                     = new BehaviorSubject<Array<OutOfOfficeEvent>>(new Array<OutOfOfficeEvent>());
 
         this.userService.getCurrentUserObservable()
-                        .subscribe( (currentUser: User) => { this.currentUser = currentUser; } );
+                        .subscribe( (currentUser: User) =>
+                            {
+                                this.currentUser = currentUser;
+                                this.fetchHostedAppointments();
+                            }
+                        );
 
         this.dateService.getDateFilterObservable()
-                        .subscribe( (dateFilter: DateFilter) => { this.dateFilter = dateFilter; } );
+                        .subscribe( (dateFilter: DateFilter) =>
+                            {
+                                this.dateFilter = dateFilter;
+                                this.fetchHostedAppointments();
+                            }
+                        );
     }
 
     public getHostedAppointmentArrayObservable(): BehaviorSubject<Array<MeetingAppointment>>
@@ -84,8 +94,17 @@ export class EventsService
 
     public fetchHostedAppointments(): void
     {
-        let userId = this.currentUser.id;
-        let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeHostedAppointmentsByDate`;
+        const userId = this.currentUser.id;
+
+        const startDate = `${this.dateFilter.startDate.getFullYear()}`
+                            + `-${this.dateFilter.startDate.getMonth()+1}`
+                            + `-${this.dateFilter.startDate.getDate()}`;
+
+        const endDate = `${this.dateFilter.endDate.getFullYear()}`
+                        + `-${this.dateFilter.endDate.getMonth()+1}`
+                        + `-${this.dateFilter.endDate.getDate()}`;                    
+        let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeHostedAppointmentsByDate`
+                        + `?startDate=${startDate}&endDate=${endDate}`;
 
         this.httpClient.get<Array<MeetingAppointment>>(apiUrl)
                         .pipe()
@@ -93,7 +112,8 @@ export class EventsService
                             {
                                 this.hostedAppointmentArray = appointments;
                                 this.hostedAppointmentArrayObservable.next(appointments);
-                                console.log("users fetched");
+                                console.log("appointments fetched");
+                                console.table(appointments);
                             }
                         );
     }
