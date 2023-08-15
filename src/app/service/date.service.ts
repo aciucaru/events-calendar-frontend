@@ -40,11 +40,12 @@ export class DateService
         if(dateFilter != null)
         {
             this.dateFilterObservable.next(dateFilter);
+            this.setWeekDateRanges(dateFilter.year, dateFilter.month);
+            this.currentWeekIndex = dateFilter.week;
+            this.currentWeekDatesObservable.next(this.weekDateRanges[this.currentWeekIndex]);
 
             console.log(`dateFilter year: ${dateFilter.year}`);
             console.log(`dateFilter month: ${dateFilter.month}`);
-
-            this.setWeekDateRanges(dateFilter.year, dateFilter.month);
         }
     }
 
