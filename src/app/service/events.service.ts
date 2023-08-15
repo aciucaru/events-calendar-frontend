@@ -20,37 +20,52 @@ export class EventsService
 {
     private currentUser: User = { id: 0, username: "", name: "", email: "" };
 
-    private dateFilter: DateFilter =
-    {
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-        startDate: new Date(),
-        endDate: new Date()
-    };
+    private dateFilter: DateFilter;
 
     /* reusable buffer array for the corresponding BehaviorSubject, so that no new array is created everytime
-    the BehaviorSubject needs to ghange and needs a new array; this array is reused and has a initial capacity
-    of 5 weeks * 5 days/week x 8 hours/day x 4 hosted appointments/hour*/
-    private hostedAppointmentArray: Array<MeetingAppointment> = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
-    private hostedAppointmentArrayObservable: BehaviorSubject<Array<MeetingAppointment>>
-                            = new BehaviorSubject<Array<MeetingAppointment>>(new Array<MeetingAppointment>());
+    the BehaviorSubject needs to ghange and needs a new array */
+    private hostedAppointmentArray: Array<MeetingAppointment>;
+    private hostedAppointmentArrayObservable: BehaviorSubject<Array<MeetingAppointment>>;;
 
-    /* reusable buffer array for the corresponding BehaviorSubject, this array has a initial capacity
-    of 5 weeks * 5 days/week x 8 hours/day x 8 meeting invitations/hour */
-    private invitationArray: Array<Invitation> = new Array<Invitation>(5 * 5 * 8 * 8)
-    private invitationArrayObservable: BehaviorSubject<Array<Invitation>>
-                                = new BehaviorSubject<Array<Invitation>>(new Array<Invitation>());
+    /* reusable buffer array for the corresponding BehaviorSubject */
+    private invitationArray: Array<Invitation>;
+    private invitationArrayObservable: BehaviorSubject<Array<Invitation>>;
 
-    /* reusable buffer array for the corresponding BehaviorSubject, this array has a initial capacity
-    of 5 weeks * 5 days/week x 4 out of office events/day */
-    private outOfOfficeEventArray: Array<OutOfOfficeEvent> = new Array<OutOfOfficeEvent>(5 * 5 * 4);
-    private outOfOfficeEventArrayObservable: BehaviorSubject<Array<OutOfOfficeEvent>>
-                                = new BehaviorSubject<Array<OutOfOfficeEvent>>(new Array<OutOfOfficeEvent>());
+    /* reusable buffer array for the corresponding BehaviorSubject */
+    private outOfOfficeEventArray: Array<OutOfOfficeEvent>;
+    private outOfOfficeEventArrayObservable: BehaviorSubject<Array<OutOfOfficeEvent>>;
 
     constructor(private httpClient: HttpClient,
                 protected userService: UserService,
                 protected dateService: DateService)
     {
+        this.currentUser = { id: 0, username: "", name: "", email: "" };
+
+        this.dateFilter =
+        {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth(),
+            startDate: new Date(),
+            endDate: new Date()
+        };
+    
+        /* reusable buffer array which has a initial capacity of:
+        5 weeks * 5 days/week x 8 hours/day x 4 hosted appointments/hour*/
+        this.hostedAppointmentArray = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
+        this.hostedAppointmentArrayObservable
+                 = new BehaviorSubject<Array<MeetingAppointment>>(new Array<MeetingAppointment>());
+    
+        /* reusable buffer array which has a initial capacity of:
+        5 weeks * 5 days/week x 8 hours/day x 8 meeting invitations/hour */
+        this.invitationArray = new Array<Invitation>(5 * 5 * 8 * 8)
+        this.invitationArrayObservable = new BehaviorSubject<Array<Invitation>>(new Array<Invitation>());
+    
+        /* reusable buffer array which has a initial capacity of:
+        5 weeks * 5 days/week x 4 out of office events/day */
+        this.outOfOfficeEventArray = new Array<OutOfOfficeEvent>(5 * 5 * 4);
+        this.outOfOfficeEventArrayObservable
+                                    = new BehaviorSubject<Array<OutOfOfficeEvent>>(new Array<OutOfOfficeEvent>());
+
         this.userService.getCurrentUserObservable()
                         .subscribe( (currentUser: User) => { this.currentUser = currentUser; } );
 

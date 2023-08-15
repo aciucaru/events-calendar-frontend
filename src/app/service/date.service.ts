@@ -9,16 +9,22 @@ import { DateFilter } from '../model/date-filter';
 })
 export class DateService
 {
-    private dateFilterObservable: BehaviorSubject<DateFilter> = new BehaviorSubject<DateFilter>(
-                                                                                {
-                                                                                    year: new Date().getFullYear(),
-                                                                                    month: new Date().getMonth(),
-                                                                                    startDate: new Date(),
-                                                                                    endDate: new Date()
-                                                                                }
-                                                                            );
+    private dateFilterObservable: BehaviorSubject<DateFilter>;
+    private weekDateRanges: Array<{weekStart: Date; weekEnd: Date;}>
 
-    constructor() { }
+    constructor()
+    {
+        this.dateFilterObservable = new BehaviorSubject<DateFilter>(
+            {
+                year: new Date().getFullYear(),
+                month: new Date().getMonth(),
+                startDate: new Date(),
+                endDate: new Date()
+            }
+        );
+
+        this.weekDateRanges = new Array<{weekStart: Date; weekEnd: Date;}>();
+    }
 
     public getDateFilterObservable(): BehaviorSubject<DateFilter> { return this.dateFilterObservable; }
 
@@ -71,7 +77,7 @@ export class DateService
     /* Helper method that gererates the dates between the weeks of o month from a certain year.
     For each week, this method generates two dates: the date at the start of the week and the date
     at the end of the week. */
-    public getWeekDateRange(year: number, month: number): Array<{weekStart: Date; weekEnd: Date;}>
+    public getWeekDateRanges(year: number, month: number): Array<{weekStart: Date; weekEnd: Date;}>
     {
         const numberOfWeeks = this.getWeekCount(year, month);
         const weekDatesArray: Array<{weekStart: Date, weekEnd: Date}>

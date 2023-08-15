@@ -11,13 +11,14 @@ import { DateFilter } from '../model/date-filter';
 })
 export class UserService
 {
-    private userArrayObservable: BehaviorSubject<Array<User>> = new BehaviorSubject<Array<User>>([]);
-    private currentUserObservable: BehaviorSubject<User> = new BehaviorSubject<User>(
-                                                                { id: 0, username: "", name: "", email: "" }
-                                                            );
+    private userArrayObservable: BehaviorSubject<Array<User>>;
+    private currentUserObservable: BehaviorSubject<User>;
 
     constructor(private httpClient: HttpClient)
     {
+        this.userArrayObservable = new BehaviorSubject<Array<User>>([]);
+        this.currentUserObservable = new BehaviorSubject<User>( { id: 0, username: "", name: "", email: "" } );
+
         this.fetchAllUsersFromServer();
     }
 
