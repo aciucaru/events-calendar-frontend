@@ -51,7 +51,6 @@ export class DateSelectorComponent implements OnInit
     protected numberOfWeeksInCurrentnMonth: number = 0;
 
 
-    // private invitationArray: Array<Invitation> = new Array<Invitation>(5 * 5 * 8 * 8)
     // private outOfOfficeEventArray: Array<OutOfOfficeEvent> = new Array<OutOfOfficeEvent>(5 * 5 * 4);
 
     public constructor(protected dateFilterService: DateService)
