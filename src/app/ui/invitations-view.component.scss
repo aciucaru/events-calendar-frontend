@@ -36,11 +36,10 @@
 }
 
 .id-col { width: 100px; }
-.meeting-id-fk-col { width: 125px; }
-.active-col { width: 100px; }
-.start-col { width: 200px; }
-.end-col { width: 200px; }
-.meeting-event-col { width: 300px; }
+.appointment-id-fk-col { width: 200px; }
+.guest-user-id-fk-col { width: 100px; }
+.guest-answer-col { width: 200px; }
+.guest-user-col { width: 200px; }
 
 .table-header-cell
 {
