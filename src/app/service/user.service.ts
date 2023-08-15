@@ -29,13 +29,13 @@ export class UserService
         let apiUrl = "http://127.0.0.1:8001/api/user/all";
 
         this.httpClient.get<Array<User>>(apiUrl)
-                                            .pipe()
-                                            .subscribe( (users: Array<User>) =>
-                                                {
-                                                    this.userArrayObservable.next(users);
-                                                    console.log("users fetched");
-                                                }
-                                            );
+                        .pipe()
+                        .subscribe( (users: Array<User>) =>
+                            {
+                                this.userArrayObservable.next(users);
+                                console.log("users fetched");
+                            }
+                        );
     }
 
     public setCurrentUser(user: User): void
