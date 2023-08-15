@@ -27,12 +27,6 @@ import { DateFilter } from '../model/date-filter';
             <option *ngFor="let month of monthOptionArray; let monthIndex = index;"
             [selected]="monthIndex === dateFilter.month">{{month}}</option>
         </select>
-
-        <label for="start-date-select">Start date</label>
-        <input type="date" name="start-date-select" (change)="selectStartDate($event)">
-
-        <label for="end-date-select">End date</label>
-        <input type="date" name="end-date-select" (change)="selectEndDate($event)">
     </div>
   `,
   styles: [],
@@ -131,28 +125,4 @@ export class DateSelectorComponent implements OnInit
 
         console.log(monthIndex );
     }
-
-    public selectStartDate(event: Event): void
-    {
-        const target = event.target as HTMLDataElement;
-
-        const newDate: Date = new Date(target.value);
-        this.dateFilter.startDate = newDate;
-        this.dateFilterService.setDateFilter(this.dateFilter);
-
-        console.log(newDate);
-    }
-
-    public selectEndDate(event: Event): void
-    {
-        const target = event.target as HTMLDataElement;
-
-        const newDate: Date = new Date(target.value);
-        this.dateFilter.endDate = newDate;
-        this.dateFilterService.setDateFilter(this.dateFilter);
-
-        console.log(newDate);
-    }
-
-
 }
