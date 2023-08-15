@@ -9,6 +9,7 @@ import { MainUiComponent } from './ui/main-ui.component';
 import { TopToolbarComponent } from './ui/top-toolbar.component';
 import { UserSelectorComponent } from './ui/user-selector.component';
 import { DateSelectorComponent } from './ui/date-selector.component';
+import { HostedAppointmentViewComponent } from './ui/hosted-appointment-view.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { DateSelectorComponent } from './ui/date-selector.component';
     TopToolbarComponent,
     UserSelectorComponent,
     DateSelectorComponent,
+    HostedAppointmentViewComponent,
   ],
   imports: [
     BrowserModule,
