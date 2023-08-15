@@ -20,9 +20,9 @@ import { User } from '../model/user';
 })
 export class UserSelectorComponent implements OnInit
 {
-    public cities: Array<string> = [];
-    public users: Array<User> = [];
-    public currentUser: User = { id: 0, username: "", name: "Please select", email: "" };
+    protected cities: Array<string> = [];
+    protected users: Array<User> = [];
+    protected currentUser: User = { id: 0, username: "", name: "Please select", email: "" };
 
     public constructor(protected userService: UserService) {}
 
