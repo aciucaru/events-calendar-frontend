@@ -43,40 +43,43 @@ import { DateFilter } from '../model/date-filter';
 })
 export class DateSelectorComponent implements OnInit
 {
-    protected dateFilter: DateFilter = {
-                                        year: new Date().getFullYear(),
-                                        month: new Date().getMonth(),
-                                        startDate: new Date(),
-                                        endDate: new Date()
-                                    };
-
-    protected yearOptionArray: Array<number> = new Array<number>(20);
-
-    protected monthOptionArray: Array<string> =
-    [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    ];
+    protected dateFilter: DateFilter;
+    protected yearOptionArray: Array<number>;
+    protected monthOptionArray: Array<string>;
 
     protected numberOfWeeksInCurrentnMonth: number = 0;
-    protected weekOptionArray: Array<{weekStart: Date; weekEnd: Date;}>
-                                = new Array<{weekStart: Date; weekEnd: Date;}>();
 
     // private hostedAppointmentArray: Array<MeetingAppointment> = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
     // private invitationArray: Array<Invitation> = new Array<Invitation>(5 * 5 * 8 * 8)
     // private outOfOfficeEventArray: Array<OutOfOfficeEvent> = new Array<OutOfOfficeEvent>(5 * 5 * 4);
 
-    public constructor(protected dateFilterService: DateService) {}
+    public constructor(protected dateFilterService: DateService)
+    {
+        this.dateFilter = {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth(),
+            startDate: new Date(),
+            endDate: new Date()
+        };
+
+        this.yearOptionArray = new Array<number>(20);
+
+        this.monthOptionArray =
+        [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ];
+    }
 
     public ngOnInit(): void
     {
@@ -88,8 +91,6 @@ export class DateSelectorComponent implements OnInit
                                     this.setYearOptionArray(dateFilter.year);
                                     this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                                             .getWeekCount(dateFilter.year, dateFilter.month);
-                                    this.weekOptionArray = this.dateFilterService
-                                                                .getWeekDateRanges(dateFilter.year, dateFilter.month);
                                 }
                             );
                  
@@ -133,8 +134,6 @@ export class DateSelectorComponent implements OnInit
         this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                 .getWeekCount(this.dateFilter.year, this.dateFilter.month);
 
-        this.weekOptionArray = this.dateFilterService.getWeekDateRanges(this.dateFilter.year, this.dateFilter.month);
-
         console.log(`selected year: ${target.value}`);
         console.log(`number of weeks: ${this.numberOfWeeksInCurrentnMonth}`);
     }
@@ -151,8 +150,6 @@ export class DateSelectorComponent implements OnInit
 
         this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                 .getWeekCount(this.dateFilter.year, this.dateFilter.month);
-
-        this.weekOptionArray = this.dateFilterService.getWeekDateRanges(this.dateFilter.year, this.dateFilter.month);
 
         console.log(`selected month index: ${target.value}`);
         console.log(`number of weeks: ${this.numberOfWeeksInCurrentnMonth}`);
