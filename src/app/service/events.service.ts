@@ -10,7 +10,7 @@ import { Invitation } from '../model/invitation';
 import { OutOfOfficeEvent } from '../model/out-of-office-event';
 import { User } from '../model/user';
 import { DateService } from './date.service';
-import { DateFilter } from '../model/date-filter';
+import { DateFilter, WeekDates } from '../model/date-filter';
 
 
 @Injectable({
@@ -18,9 +18,12 @@ import { DateFilter } from '../model/date-filter';
 })
 export class EventsService
 {
-    private currentUser: User = { id: 0, username: "", name: "", email: "" };
+    private currentUser: User;
+    private weekDates: WeekDates;
+    private startDateString: string = "";
+    private endDateString: string = "";
 
-    private dateFilter: DateFilter;
+    // private dateFilter: DateFilter;
 
     /* reusable buffer array for the corresponding BehaviorSubject, so that no new array is created everytime
     the BehaviorSubject needs to ghange and needs a new array */
@@ -40,15 +43,8 @@ export class EventsService
                 protected dateService: DateService)
     {
         this.currentUser = { id: 0, username: "", name: "", email: "" };
+        this.weekDates = { weekStart: new Date(), weekEnd: new Date() };
 
-        this.dateFilter =
-        {
-            year: new Date().getFullYear(),
-            month: new Date().getMonth(),
-            startDate: new Date(),
-            endDate: new Date()
-        };
-    
         /* reusable buffer array which has a initial capacity of:
         5 weeks * 5 days/week x 8 hours/day x 4 hosted appointments/hour*/
         this.hostedAppointmentArray = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
@@ -75,10 +71,26 @@ export class EventsService
                             }
                         );
 
-        this.dateService.getDateFilterObservable()
-                        .subscribe( (dateFilter: DateFilter) =>
+        // this.dateService.getDateFilterObservable()
+        //                 .subscribe( (dateFilter: DateFilter) =>
+        //                     {
+        //                         this.dateFilter = dateFilter;
+        //                         this.fetchHostedAppointments();
+        //                         this.fetchInvitations();
+        //                     }
+        //                 );
+
+        this.dateService.getCurrentWeekDatesObservable()
+                        .subscribe( (weekDates: WeekDates) =>
                             {
-                                this.dateFilter = dateFilter;
+                                this.weekDates = weekDates;
+
+                                const startDate = this.weekDates.weekStart;
+                                const endDate = this.weekDates.weekEnd;
+                        
+                                this.startDateString = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
+                                this.endDateString = `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDate()}`; 
+                                
                                 this.fetchHostedAppointments();
                                 this.fetchInvitations();
                             }
@@ -96,17 +108,15 @@ export class EventsService
 
     public fetchHostedAppointments(): void
     {
+        // console.log(`fetchHostedAppointments startDate: ${this.dateFilter.startDate}`);
+        // console.log(`fetchHostedAppointments endDate: ${this.dateFilter.endDate}`);
+
+        // console.log(this.dateFilter.endDate);
+
         const userId = this.currentUser.id;
 
-        const startDate = `${this.dateFilter.startDate.getFullYear()}`
-                            + `-${this.dateFilter.startDate.getMonth()+1}`
-                            + `-${this.dateFilter.startDate.getDate()}`;
-
-        const endDate = `${this.dateFilter.endDate.getFullYear()}`
-                        + `-${this.dateFilter.endDate.getMonth()+1}`
-                        + `-${this.dateFilter.endDate.getDate()}`;                    
         let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeHostedAppointmentsByDate`
-                        + `?startDate=${startDate}&endDate=${endDate}`;
+                        + `?startDate=${this.startDateString}&endDate=${this.endDateString}`;
 
         this.httpClient.get<Array<MeetingAppointment>>(apiUrl)
                         .pipe()
@@ -124,16 +134,8 @@ export class EventsService
     {
         const userId = this.currentUser.id;
 
-        const startDate = `${this.dateFilter.startDate.getFullYear()}`
-                            + `-${this.dateFilter.startDate.getMonth()+1}`
-                            + `-${this.dateFilter.startDate.getDate()}`;
-
-        const endDate = `${this.dateFilter.endDate.getFullYear()}`
-                        + `-${this.dateFilter.endDate.getMonth()+1}`
-                        + `-${this.dateFilter.endDate.getDate()}`;    
-
         let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeInvitationsByDate`
-                        + `?startDate=${startDate}&endDate=${endDate}`;
+                        + `?startDate=${this.startDateString}&endDate=${this.endDateString}`;
 
         this.httpClient.get<Array<Invitation>>(apiUrl)
                         .pipe()
