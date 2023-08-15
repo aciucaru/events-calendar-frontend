@@ -11,11 +11,17 @@ import { DateFilter } from '../model/date-filter';
 @Component({
   selector: 'date-selector',
   template: `
-    <div>
+    <div class="main-container">
         <label for="year-select">Year</label>
         <select #yearSelect name="year-select" class="year-select"
             (change)="selectYear($event)">
             <option *ngFor="let year of yearOptionArray">{{year}}</option>
+        </select>
+
+        <label for="month-select">Month</label>
+        <select #monthSelect name="month-select" class="month-select"
+            (change)="selectMonth($event)">
+            <option *ngFor="let month of monthOptionArray; let monthIndex = index;">{{monthIndex+1}}</option>
         </select>
     </div>
   `,
@@ -31,6 +37,21 @@ export class DateSelectorComponent implements OnInit
                                         endDate: new Date()
                                     };
     protected yearOptionArray: Array<number> = new Array<number>(20);
+    protected monthOptionArray: Array<string> =
+    [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
 
     // private hostedAppointmentArray: Array<MeetingAppointment> = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
     // private invitationArray: Array<Invitation> = new Array<Invitation>(5 * 5 * 8 * 8)
@@ -70,12 +91,24 @@ export class DateSelectorComponent implements OnInit
         //                     );                          
     }
 
-    public selectYear(event: any): void
+    public selectYear(event: Event): void
     {
-        this.dateFilter.year = event.target.value;
+        const target = event.target as HTMLSelectElement;
+
+        this.dateFilter.year = parseInt(target.value);
         this.dateFilterService.setDateFilter(this.dateFilter);
 
-        console.log(event.target.value);
+        console.log(target.value);
+    }
+
+    public selectMonth(event: Event): void
+    {
+        const target = event.target as HTMLSelectElement;
+
+        this.dateFilter.month = parseInt(target.value);
+        this.dateFilterService.setDateFilter(this.dateFilter);
+
+        console.log(target.value);
     }
 
     private setYearOptionArray(middleYear: number): void
