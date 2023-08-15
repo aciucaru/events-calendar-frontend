@@ -68,5 +68,56 @@ export class DateService
         return weeksInInterval + 2;
     }
 
+    /* Helper method that gererates the dates between the weeks of o month from a certain year.
+    For each week, this method generates two dates: the date at the start of the week and the date
+    at the end of the week. */
+    public getWeekDateRange(year: number, month: number): Array<{weekStart: Date; weekEnd: Date;}>
+    {
+        const numberOfWeeks = this.getWeekCount(year, month);
+        const weekDatesArray: Array<{weekStart: Date, weekEnd: Date}>
+                                = new Array<{weekStart: Date, weekEnd: Date}>(numberOfWeeks);
+
+        const firstDayOfMonth = new Date(year, month - 1, 1); // (year, monthIndex, day)
+        const lastDayOfMonth = new Date(year, month, 0); // (year, monthIndex, day)
+
+        // get start and end days of first week, the first week might not have 7 complete days
+        let startDayIndexOfFirstWeek = firstDayOfMonth.getDay(); // returns 0 to 6 (Sunday to Saturday)
+        if(startDayIndexOfFirstWeek === 0) startDayIndexOfFirstWeek = 7; // Sunday is 0, but we wanted 7
+
+        const firstWeekStartDay = new Date(firstDayOfMonth);
+        const firstWeekEndDay = new Date(firstWeekStartDay);
+        firstWeekEndDay.setDate(firstWeekEndDay.getDate() + (7 - startDayIndexOfFirstWeek)); // first Sunday of that month
+        weekDatesArray[0] = {weekStart: firstWeekStartDay, weekEnd: firstWeekEndDay};
+
+        // get start and days of last week, the last week might not have 7 complete days
+        let endDayIndexOfLastWeek = lastDayOfMonth.getDay(); // returns 0 to 6 (Sunday to Saturday)
+        if(endDayIndexOfLastWeek === 0) endDayIndexOfLastWeek = 7; // Sunday is 0, but we wanted 7
+
+        const lastWeekStartDay = new Date(lastDayOfMonth);
+        lastWeekStartDay.setDate(lastWeekStartDay.getDate() - endDayIndexOfLastWeek + 1);
+        const lastWeekEndDay = new Date(lastDayOfMonth);
+        weekDatesArray[numberOfWeeks - 1] = {weekStart: lastWeekStartDay, weekEnd: lastWeekEndDay};
+
+        // determine the start and end dates of the in-between weeks
+        // the iteration is being made from 2nd to and N-1 week, because the first and last week are already set
+        // the dates of the first week are used as reference to incrementally generate the other dates
+        let currentStartDay: Date;
+        let currentEndDay: Date;
+        for(let i=1; i<numberOfWeeks-1; i++)
+        {
+            currentStartDay = new Date(firstWeekEndDay);
+            currentStartDay.setDate(currentStartDay.getDate() + 1 + 7*(i-1));
+
+            currentEndDay = new Date(currentStartDay);
+            currentEndDay.setDate(currentEndDay.getDate() + 6);
+
+            weekDatesArray[i] = {weekStart: currentStartDay, weekEnd: currentEndDay};
+        }
+
+        console.table(weekDatesArray);
+
+        return weekDatesArray;
+    }
+
 
 }
