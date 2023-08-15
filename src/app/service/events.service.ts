@@ -66,4 +66,20 @@ export class EventsService
 
     public getOutOfOfficeEventArrayObservable(): BehaviorSubject<Array<OutOfOfficeEvent>>
     { return this.outOfOfficeEventArrayObservable; }
+
+    public fetchHostedAppointments(): void
+    {
+        let userId = this.currentUser.id;
+        let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeHostedAppointmentsByDate`;
+
+        this.httpClient.get<Array<MeetingAppointment>>(apiUrl)
+                        .pipe()
+                        .subscribe( (appointments: Array<MeetingAppointment>) =>
+                            {
+                                this.hostedAppointmentArray = appointments;
+                                this.hostedAppointmentArrayObservable.next(appointments);
+                                console.log("users fetched");
+                            }
+                        );
+    }
 }
