@@ -125,7 +125,7 @@ export class DateService
             weekDatesArray[i] = {weekStart: currentStartDay, weekEnd: currentEndDay};
         }
 
-        console.table(weekDatesArray);
+        // console.table(weekDatesArray);
 
         this.weekDateRanges = weekDatesArray;
     }
