@@ -53,8 +53,7 @@ export class InvitationsViewComponent
         this.dateFilter = {
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
-            startDate: new Date(),
-            endDate: new Date()
+            week: 1 // first week of the month
         };
 
         this.invitationArray = new Array<Invitation>(5 * 5 * 8 * 8);
