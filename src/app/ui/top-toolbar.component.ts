@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div class="main-container">
         <user-selector></user-selector>
+        <date-selector></date-selector>
     </div>
   `,
   styles: [],
