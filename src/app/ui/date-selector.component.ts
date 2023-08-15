@@ -15,13 +15,17 @@ import { DateFilter } from '../model/date-filter';
         <label for="year-select">Year</label>
         <select #yearSelect name="year-select" class="year-select"
             (change)="selectYear($event)">
-            <option *ngFor="let year of yearOptionArray">{{year}}</option>
+            <option *ngFor="let year of yearOptionArray"
+            [selected]="year === dateFilter.year">
+                {{year}}
+            </option>
         </select>
 
         <label for="month-select">Month</label>
         <select #monthSelect name="month-select" class="month-select"
             (change)="selectMonth($event)">
-            <option *ngFor="let month of monthOptionArray; let monthIndex = index;">{{monthIndex+1}}</option>
+            <option *ngFor="let month of monthOptionArray; let monthIndex = index;"
+            [selected]="monthIndex === dateFilter.month">{{month}}</option>
         </select>
 
         <label for="start-date-select">Start date</label>
@@ -36,7 +40,7 @@ import { DateFilter } from '../model/date-filter';
 })
 export class DateSelectorComponent implements OnInit
 {
-    private dateFilter: DateFilter = {
+    protected dateFilter: DateFilter = {
                                         year: new Date().getFullYear(),
                                         month: new Date().getMonth(),
                                         startDate: new Date(),
@@ -119,10 +123,13 @@ export class DateSelectorComponent implements OnInit
     {
         const target = event.target as HTMLSelectElement;
 
-        this.dateFilter.month = parseInt(target.value);
+        // the monthIndex will be between 1 and 12
+        const monthIndex = this.monthOptionArray.findIndex( (month: string) => month === target.value) + 1;
+
+        this.dateFilter.month = monthIndex;
         this.dateFilterService.setDateFilter(this.dateFilter);
 
-        console.log(target.value);
+        console.log(monthIndex );
     }
 
     public selectStartDate(event: Event): void
