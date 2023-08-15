@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { DateFilter } from '../model/date-filter';
+import { DateFilter, WeekDates } from '../model/date-filter';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,9 @@ import { DateFilter } from '../model/date-filter';
 export class DateService
 {
     private dateFilterObservable: BehaviorSubject<DateFilter>;
-    private weekDateRanges: Array<{weekStart: Date; weekEnd: Date;}>;
+    private currentWeekDatesObservable: BehaviorSubject<WeekDates>;
+    private currentWeekIndex: number;
+    private weekDateRanges: Array<WeekDates>;
 
     constructor()
     {
@@ -18,15 +20,20 @@ export class DateService
             {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth(),
-                startDate: new Date(),
-                endDate: new Date()
+                // startDate: new Date(),
+                // endDate: new Date()
+                week: 1
             }
         );
 
-        this.weekDateRanges = new Array<{weekStart: Date; weekEnd: Date;}>();
+        this.currentWeekDatesObservable = new BehaviorSubject<WeekDates>({ weekStart: new Date(), weekEnd: new Date() });
+
+        this.currentWeekIndex = 1; // first week of the month
+        this.weekDateRanges = new Array<WeekDates>();
     }
 
     public getDateFilterObservable(): BehaviorSubject<DateFilter> { return this.dateFilterObservable; }
+    public getCurrentWeekDatesObservable(): BehaviorSubject<WeekDates> { return this.currentWeekDatesObservable; }
 
     public setDateFilter(dateFilter: DateFilter): void
     {
@@ -34,9 +41,11 @@ export class DateService
         {
             this.dateFilterObservable.next(dateFilter);
 
+            console.log(`dateFilter year: ${dateFilter.year}`);
+            console.log(`dateFilter month: ${dateFilter.month}`);
+
             this.setWeekDateRanges(dateFilter.year, dateFilter.month);
         }
-
     }
 
     /* helper method that calculates the number of weeks in a scpecific month, from a specific year;
