@@ -24,8 +24,7 @@ import { DateFilter } from '../model/date-filter';
         <label for="month-select">Month</label>
         <select #monthSelect name="month-select" class="month-select"
             (change)="selectMonth($event)">
-            <option *ngFor="let month of monthOptionArray; let monthIndex = index;"
-            [selected]="monthIndex === dateFilter.month-1">
+            <option *ngFor="let month of monthOptionArray; let monthIndex = index;" [value]="monthIndex+1">
                 {{month}}
             </option>
         </select>
@@ -33,8 +32,8 @@ import { DateFilter } from '../model/date-filter';
         <label for="week-select">Week</label>
         <select #weekSelect name="week-select" class="week-select"
             (change)="selectWeek($event)">
-            <option *ngFor="let week of weekOptionArray; let weekIndex = index;">
-                Week {{weekIndex}}
+            <option *ngFor="let week of weekOptionArray; let weekIndex = index;" [value]="weekIndex">
+                Week {{weekIndex + 1}}
             </option>
         </select>
     </div>
@@ -90,7 +89,7 @@ export class DateSelectorComponent implements OnInit
                                     this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                                             .getWeekCount(dateFilter.year, dateFilter.month);
                                     this.weekOptionArray = this.dateFilterService
-                                                                .getWeekDateRange(dateFilter.year, dateFilter.month);
+                                                                .getWeekDateRanges(dateFilter.year, dateFilter.month);
                                 }
                             );
                  
@@ -134,7 +133,7 @@ export class DateSelectorComponent implements OnInit
         this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                 .getWeekCount(this.dateFilter.year, this.dateFilter.month);
 
-        this.weekOptionArray = this.dateFilterService.getWeekDateRange(this.dateFilter.year, this.dateFilter.month);
+        this.weekOptionArray = this.dateFilterService.getWeekDateRanges(this.dateFilter.year, this.dateFilter.month);
 
         console.log(`selected year: ${target.value}`);
         console.log(`number of weeks: ${this.numberOfWeeksInCurrentnMonth}`);
@@ -145,22 +144,24 @@ export class DateSelectorComponent implements OnInit
         const target = event.target as HTMLSelectElement;
 
         // the monthIndex will be between 1 and 12
-        const monthIndex = this.monthOptionArray.findIndex( (month: string) => month === target.value) + 1;
+        // const monthIndex = this.monthOptionArray.findIndex( (month: string) => month === target.value) + 1;
 
-        this.dateFilter.month = monthIndex;
+        this.dateFilter.month = parseInt(target.value);
         this.dateFilterService.setDateFilter(this.dateFilter);
 
         this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                 .getWeekCount(this.dateFilter.year, this.dateFilter.month);
 
-        this.weekOptionArray = this.dateFilterService.getWeekDateRange(this.dateFilter.year, this.dateFilter.month);
+        this.weekOptionArray = this.dateFilterService.getWeekDateRanges(this.dateFilter.year, this.dateFilter.month);
 
-        console.log(`selected month index: ${monthIndex}`);
+        console.log(`selected month index: ${target.value}`);
         console.log(`number of weeks: ${this.numberOfWeeksInCurrentnMonth}`);
     }
 
     public selectWeek(event: Event): void
     {
         const target = event.target as HTMLSelectElement;
+
+        console.log(`selected week: ${target.value}`)
     }
 }
