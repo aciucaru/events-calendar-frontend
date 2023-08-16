@@ -11,6 +11,8 @@ import { UserSelectorComponent } from './ui/user-selector.component';
 import { DateSelectorComponent } from './ui/date-selector.component';
 import { HostedAppointmentViewComponent } from './ui/hosted-appointment-view.component';
 import { InvitationsViewComponent } from './ui/invitations-view.component';
+import { TabPanelComponent } from './ui/tab-panel.component';
+import { TabItemComponent } from './ui/tab-item.component';
 
 
 @NgModule({
@@ -22,6 +24,8 @@ import { InvitationsViewComponent } from './ui/invitations-view.component';
     DateSelectorComponent,
     HostedAppointmentViewComponent,
     InvitationsViewComponent,
+    TabPanelComponent,
+    TabItemComponent,
   ],
   imports: [
     BrowserModule,
