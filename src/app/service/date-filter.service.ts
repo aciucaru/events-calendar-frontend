@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { DateFilter, WeekDates } from '../model/date-filter';
+import { DateFilter, WeekInterval } from '../model/date-filter';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +10,9 @@ import { DateFilter, WeekDates } from '../model/date-filter';
 export class DateFilterService
 {
     private dateFilterObservable: BehaviorSubject<DateFilter>;
-    private currentWeekDatesObservable: BehaviorSubject<WeekDates>;
+    private currentWeekDatesObservable: BehaviorSubject<WeekInterval>;
     private currentWeekIndex: number;
-    private weekDateRanges: Array<WeekDates>;
+    private weekDateRanges: Array<WeekInterval>;
 
     constructor()
     {
@@ -26,14 +26,14 @@ export class DateFilterService
             }
         );
 
-        this.currentWeekDatesObservable = new BehaviorSubject<WeekDates>({ weekStart: new Date(), weekEnd: new Date() });
+        this.currentWeekDatesObservable = new BehaviorSubject<WeekInterval>({ weekStart: new Date(), weekEnd: new Date() });
 
         this.currentWeekIndex = 1; // first week of the month
-        this.weekDateRanges = new Array<WeekDates>();
+        this.weekDateRanges = new Array<WeekInterval>();
     }
 
     public getDateFilterObservable(): BehaviorSubject<DateFilter> { return this.dateFilterObservable; }
-    public getCurrentWeekDatesObservable(): BehaviorSubject<WeekDates> { return this.currentWeekDatesObservable; }
+    public getCurrentWeekDatesObservable(): BehaviorSubject<WeekInterval> { return this.currentWeekDatesObservable; }
 
     public setDateFilter(dateFilter: DateFilter): void
     {

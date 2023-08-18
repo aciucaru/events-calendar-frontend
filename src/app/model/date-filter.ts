@@ -5,7 +5,7 @@ export interface DateFilter
     week: number; 
 }
 
-export interface WeekDates
+export interface WeekInterval
 {
     weekStart: Date;
     weekEnd: Date;
