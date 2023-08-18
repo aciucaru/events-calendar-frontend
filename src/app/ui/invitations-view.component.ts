@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { DateService } from '../service/date.service';
+import { DateFilterService } from '../service/date-filter.service';
 import { EventsService } from '../service/events.service';
 
 import { DateFilter } from '../model/date-filter';
@@ -24,7 +24,6 @@ import { Invitation } from '../model/invitation';
                     <td scope="col" class="table-header-cell appointment-id-fk-col">appointment_id_fk</td>
                     <td scope="col" class="table-header-cell guest-user-id-fk-col">guest_user_id_fk</td>
                     <td scope="col" class="table-header-cell guest-answer-col">guest_answer</td>
-                    <td scope="col" class="table-header-cell guest-user-col">guest_user</td>
                 </tr>
             </thead>
 
@@ -34,7 +33,6 @@ import { Invitation } from '../model/invitation';
                     <td class="table-body-cell appointment-id-fk-col">{{invitation.appointment_id_fk}}</td>
                     <td class="table-body-cell guest-user-id-fk-col">{{invitation.guest_user_id_fk}}</td>
                     <td class="table-body-cell guest-answer-col">{{invitation.guest_answer}}</td>
-                    <td class="table-body-cell guest-user-col">{{invitation.guest_user}}</td>
                 </tr>
             </tbody>
         </table>
@@ -48,7 +46,7 @@ export class InvitationsViewComponent
     protected dateFilter: DateFilter;
     protected invitationArray: Array<Invitation>;
 
-    public constructor(protected eventService: EventsService, protected dateFilterService: DateService)
+    public constructor(protected eventService: EventsService, protected dateFilterService: DateFilterService)
     {
         this.dateFilter = {
             year: new Date().getFullYear(),
