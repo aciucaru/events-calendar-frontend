@@ -7,7 +7,7 @@ import { DateFilter, WeekDates } from '../model/date-filter';
 @Injectable({
   providedIn: 'root'
 })
-export class DateService
+export class DateFilterService
 {
     private dateFilterObservable: BehaviorSubject<DateFilter>;
     private currentWeekDatesObservable: BehaviorSubject<WeekDates>;

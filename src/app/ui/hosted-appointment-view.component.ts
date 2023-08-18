@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DateService } from '../service/date.service';
+import { DateFilterService } from '../service/date-filter.service';
 
 import { MeetingAppointment } from '../model/meeting-appointment';
 import { DateFilter } from '../model/date-filter';
@@ -51,7 +51,7 @@ export class HostedAppointmentViewComponent implements OnInit
     protected dateFilter: DateFilter;
     protected hostedAppointmentArray: Array<MeetingAppointment>;
 
-    public constructor(protected eventService: EventsService, protected dateFilterService: DateService)
+    public constructor(protected eventService: EventsService, protected dateFilterService: DateFilterService)
     {
         this.dateFilter = {
             year: new Date().getFullYear(),

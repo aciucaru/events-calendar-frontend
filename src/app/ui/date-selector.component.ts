@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { EventsService } from '../service/events.service';
-import { DateService } from '../service/date.service';
+import { DateFilterService } from '../service/date-filter.service';
 
 import { MeetingAppointment } from '../model/meeting-appointment';
 import { Invitation } from '../model/invitation';
@@ -53,7 +53,7 @@ export class DateSelectorComponent implements OnInit
 
     // private outOfOfficeEventArray: Array<OutOfOfficeEvent> = new Array<OutOfOfficeEvent>(5 * 5 * 4);
 
-    public constructor(protected dateFilterService: DateService)
+    public constructor(protected dateFilterService: DateFilterService)
     {
         this.dateFilter = {
             year: new Date().getFullYear(),
@@ -61,7 +61,7 @@ export class DateSelectorComponent implements OnInit
             week: 1 // first week of the month
         };
 
-        this.yearOptionArray = new Array<number>(20);
+        this.yearOptionArray = new Array<number>(5);
 
         this.monthOptionArray =
         [

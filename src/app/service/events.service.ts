@@ -9,7 +9,7 @@ import { MeetingAppointment } from '../model/meeting-appointment';
 import { Invitation } from '../model/invitation';
 import { OutOfOfficeEvent } from '../model/out-of-office-event';
 import { User } from '../model/user';
-import { DateService } from './date.service';
+import { DateFilterService } from './date-filter.service';
 import { DateFilter, WeekDates } from '../model/date-filter';
 
 
@@ -40,7 +40,7 @@ export class EventsService
 
     constructor(private httpClient: HttpClient,
                 protected userService: UserService,
-                protected dateService: DateService)
+                protected dateService: DateFilterService)
     {
         this.currentUser = { id: 0, username: "", name: "", email: "" };
         this.weekDates = { weekStart: new Date(), weekEnd: new Date() };
