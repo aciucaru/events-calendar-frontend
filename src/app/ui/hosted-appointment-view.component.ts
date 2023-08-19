@@ -56,7 +56,7 @@ export class HostedAppointmentViewComponent implements OnInit
         this.dateFilter = {
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
-            week: 1 // first week of the month
+            weekIndex: 0 // first week of the month
         };
 
         this.hostedAppointmentArray = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
