@@ -19,7 +19,7 @@ import { DateFilter, SingleWeekInterval } from '../model/date-filter';
 export class EventsService
 {
     private currentUser: User;
-    private weekDates: SingleWeekInterval;
+    private weekInterval: SingleWeekInterval;
     private startDateString: string = "";
     private endDateString: string = "";
 
@@ -43,7 +43,7 @@ export class EventsService
                 protected dateService: DateFilterService)
     {
         this.currentUser = { id: 0, username: "", name: "", email: "" };
-        this.weekDates = { weekStart: new Date(), weekEnd: new Date() };
+        this.weekInterval = { weekStart: new Date(), weekEnd: new Date() };
 
         /* reusable buffer array which has a initial capacity of:
         5 weeks * 5 days/week x 8 hours/day x 4 hosted appointments/hour*/
@@ -71,22 +71,13 @@ export class EventsService
                             }
                         );
 
-        // this.dateService.getDateFilterObservable()
-        //                 .subscribe( (dateFilter: DateFilter) =>
-        //                     {
-        //                         this.dateFilter = dateFilter;
-        //                         this.fetchHostedAppointments();
-        //                         this.fetchInvitations();
-        //                     }
-        //                 );
-
         this.dateService.getCurrentWeekObservable()
                         .subscribe( (weekDates: SingleWeekInterval) =>
                             {
-                                this.weekDates = weekDates;
+                                this.weekInterval = weekDates;
 
-                                const startDate = this.weekDates.weekStart;
-                                const endDate = this.weekDates.weekEnd;
+                                const startDate = this.weekInterval.weekStart;
+                                const endDate = this.weekInterval.weekEnd;
                         
                                 this.startDateString = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
                                 this.endDateString = `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDate()}`; 
@@ -125,7 +116,8 @@ export class EventsService
                                 this.hostedAppointmentArray = appointments;
                                 this.hostedAppointmentArrayObservable.next(appointments);
                                 console.log("appointments fetched");
-                                console.table(appointments);
+                                // console.table(appointments);
+                                console.log(`fetch app: start: ${this.startDateString} end: ${this.endDateString}`);
                             }
                         );
     }
@@ -144,7 +136,8 @@ export class EventsService
                                 this.invitationArray = invitations;
                                 this.invitationArrayObservable.next(invitations);
                                 console.log("appointments fetched");
-                                console.table(invitations);
+                                // console.table(invitations);
+                                console.log(`fetch inv: start: ${this.startDateString} end: ${this.endDateString}`);
                             }
                         );
     }
