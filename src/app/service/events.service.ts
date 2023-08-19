@@ -66,8 +66,8 @@ export class EventsService
                         .subscribe( (currentUser: User) =>
                             {
                                 this.currentUser = currentUser;
-                                this.fetchHostedAppointments();
-                                this.fetchInvitations();
+                                this.fetchAllHostedAppointmentsInCurrentWeek();
+                                this.fetchAllInvitationsInCurrentWeek();
                             }
                         );
 
@@ -82,9 +82,9 @@ export class EventsService
                                 this.startDateString = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
                                 this.endDateString = `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDate()}`; 
                                 
-                                this.fetchHostedAppointments();
-                                this.fetchInvitations();
-                                this.fetchOutOfOfficeEvents();
+                                this.fetchAllHostedAppointmentsInCurrentWeek();
+                                this.fetchAllInvitationsInCurrentWeek();
+                                this.fetchAllOutOfOfficeEventsInCurrentWeek();
                             }
                         );
     }
@@ -98,7 +98,7 @@ export class EventsService
     public getOutOfOfficeEventArrayObservable(): BehaviorSubject<Array<OutOfOfficeEvent>>
     { return this.outOfOfficeEventArrayObservable; }
 
-    public fetchHostedAppointments(): void
+    public fetchAllHostedAppointmentsInCurrentWeek(): void
     {
         // console.log(`fetchHostedAppointments startDate: ${this.dateFilter.startDate}`);
         // console.log(`fetchHostedAppointments endDate: ${this.dateFilter.endDate}`);
@@ -123,7 +123,7 @@ export class EventsService
                         );
     }
 
-    public fetchInvitations(): void
+    public fetchAllInvitationsInCurrentWeek(): void
     {
         const userId = this.currentUser.id;
 
@@ -143,7 +143,7 @@ export class EventsService
                         );
     }
 
-    public fetchOutOfOfficeEvents(): void
+    public fetchAllOutOfOfficeEventsInCurrentWeek(): void
     {
         const userId = this.currentUser.id;
 
