@@ -10,7 +10,7 @@ import { Invitation } from '../model/invitation';
 import { OutOfOfficeEvent } from '../model/out-of-office-event';
 import { User } from '../model/user';
 import { DateFilterService } from './date-filter.service';
-import { DateFilter, SingleWeekInterval } from '../model/date-filter';
+import { DateFilter, SingleDayHostedAppointments, SingleDayInvitations, SingleDayOutOfOfficeEvents, SingleWeekInterval } from '../model/date-filter';
 
 
 @Injectable({
@@ -28,7 +28,7 @@ export class EventsService
     /* reusable buffer array for the corresponding BehaviorSubject, so that no new array is created everytime
     the BehaviorSubject needs to ghange and needs a new array */
     private hostedAppointmentArray: Array<MeetingAppointment>;
-    private hostedAppointmentArrayObservable: BehaviorSubject<Array<MeetingAppointment>>;;
+    private hostedAppointmentArrayObservable: BehaviorSubject<Array<MeetingAppointment>>;
 
     /* reusable buffer array for the corresponding BehaviorSubject */
     private invitationArray: Array<Invitation>;
@@ -37,6 +37,10 @@ export class EventsService
     /* reusable buffer array for the corresponding BehaviorSubject */
     private outOfOfficeEventArray: Array<OutOfOfficeEvent>;
     private outOfOfficeEventArrayObservable: BehaviorSubject<Array<OutOfOfficeEvent>>;
+
+    private hostedAppointmentsByWeekDaysObservable: BehaviorSubject<Array<SingleDayHostedAppointments>>;
+    private invitationsByWeekDaysObservable: BehaviorSubject<Array<SingleDayInvitations>>;
+    private outOfOfficeEventsByWeekDaysObservable: BehaviorSubject<Array<SingleDayOutOfOfficeEvents>>;
 
     constructor(private httpClient: HttpClient,
                 protected userService: UserService,
@@ -62,6 +66,16 @@ export class EventsService
         this.outOfOfficeEventArrayObservable
                                     = new BehaviorSubject<Array<OutOfOfficeEvent>>(new Array<OutOfOfficeEvent>());
 
+        this.hostedAppointmentsByWeekDaysObservable =
+            new BehaviorSubject<Array<SingleDayHostedAppointments>>(new Array<SingleDayHostedAppointments>());
+
+        this.invitationsByWeekDaysObservable =
+            new BehaviorSubject<Array<SingleDayInvitations>>(new Array<SingleDayInvitations>());
+
+        this.outOfOfficeEventsByWeekDaysObservable =
+            new BehaviorSubject<Array<SingleDayOutOfOfficeEvents>>(new Array<SingleDayOutOfOfficeEvents>());
+
+            // subscribe tot the observables of the UserService and DateFilterService
         this.userService.getCurrentUserObservable()
                         .subscribe( (currentUser: User) =>
                             {
@@ -72,9 +86,9 @@ export class EventsService
                         );
 
         this.dateService.getCurrentWeekObservable()
-                        .subscribe( (weekDates: SingleWeekInterval) =>
+                        .subscribe( (weekInterval: SingleWeekInterval) =>
                             {
-                                this.weekInterval = weekDates;
+                                this.weekInterval = weekInterval;
 
                                 const startDate = this.weekInterval.weekStart;
                                 const endDate = this.weekInterval.weekEnd;
@@ -97,6 +111,17 @@ export class EventsService
 
     public getOutOfOfficeEventArrayObservable(): BehaviorSubject<Array<OutOfOfficeEvent>>
     { return this.outOfOfficeEventArrayObservable; }
+
+
+
+    public getHostedAppointmentsByWeekDaysObservable(): BehaviorSubject<Array<SingleDayHostedAppointments>>
+    { return this.hostedAppointmentsByWeekDaysObservable; }
+
+    public getInvitationsByWeekDaysObservable(): BehaviorSubject<Array<SingleDayInvitations>>
+    { return this.invitationsByWeekDaysObservable; }
+
+    public getOutOfOfficeEventsByWeekDaysObservable(): BehaviorSubject<Array<SingleDayOutOfOfficeEvents>>
+    { return this.outOfOfficeEventsByWeekDaysObservable; }
 
     public fetchAllHostedAppointmentsInCurrentWeek(): void
     {
@@ -159,6 +184,31 @@ export class EventsService
                                 console.log("out-of-office fetched");
                                 // console.table(invitations);
                                 console.log(`fetch inv: start: ${this.startDateString} end: ${this.endDateString}`);
+                            }
+                        );
+    }
+
+    public fetchHostedAppointmentsInWeekDay(): void
+    {
+        // console.log(`fetchHostedAppointments startDate: ${this.dateFilter.startDate}`);
+        // console.log(`fetchHostedAppointments endDate: ${this.dateFilter.endDate}`);
+
+        // console.log(this.dateFilter.endDate);
+
+        const userId = this.currentUser.id;
+
+        let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeHostedAppointmentsByDate`
+                        + `?startDate=${this.startDateString}&endDate=${this.endDateString}`;
+
+        this.httpClient.get<Array<MeetingAppointment>>(apiUrl)
+                        .pipe()
+                        .subscribe( (appointments: Array<MeetingAppointment>) =>
+                            {
+                                this.hostedAppointmentArray = appointments;
+                                this.hostedAppointmentArrayObservable.next(appointments);
+                                console.log("appointments fetched");
+                                // console.table(appointments);
+                                console.log(`fetch app: start: ${this.startDateString} end: ${this.endDateString}`);
                             }
                         );
     }
