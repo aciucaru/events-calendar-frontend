@@ -2,7 +2,7 @@ export interface DateFilter
 {
     year: number;
     month: number; // from 1 to 12
-    week: number; 
+    weekIndex: number; // from 0 to 5
 }
 
 export interface SingleWeekInterval
