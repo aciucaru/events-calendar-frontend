@@ -91,28 +91,7 @@ export class DateSelectorComponent implements OnInit
                                     this.numberOfWeeksInCurrentnMonth = this.dateFilterService
                                                                             .getWeekCount(dateFilter.year, dateFilter.month);
                                 }
-                            );
-                 
-        // this.eventService.getHostedAppointmentArrayObservable()
-        //                     .subscribe( (appointmentArray: Array<MeetingAppointment>) =>
-        //                         {
-        //                             this.hostedAppointmentArray = appointmentArray;
-        //                         }
-        //                     );
-
-        // this.eventService.getInvitationArrayObservable()
-        //                     .subscribe( (invitationArray: Array<Invitation>) =>
-        //                         {
-        //                             this.invitationArray = invitationArray;
-        //                         }
-        //                     );
-
-        // this.eventService.getOutOfOfficeEventArrayObservable()
-        //                     .subscribe( (outOfOfficeEventArray: Array<OutOfOfficeEvent>) =>
-        //                         {
-        //                             this.outOfOfficeEventArray = outOfOfficeEventArray;
-        //                         }
-        //                     );                          
+                            );                     
     }
 
     private setYearOptionArray(middleYear: number): void
