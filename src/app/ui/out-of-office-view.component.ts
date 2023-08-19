@@ -12,7 +12,7 @@ import { DateFilterService } from '../service/date-filter.service';
             <thead class="table-header">
                 <tr>
                     <td scope="col" class="table-header-cell id-col">id</td>
-                    <td scope="col" class="table-header-cell user-id-fk-col">appointment_id_fk</td>
+                    <td scope="col" class="table-header-cell user-id-fk-col">user_id_fk</td>
                     <td scope="col" class="table-header-cell start-col">start</td>
                     <td scope="col" class="table-header-cell end-col">end</td>
                     <td scope="col" class="table-header-cell description-col">description</td>
@@ -20,12 +20,12 @@ import { DateFilterService } from '../service/date-filter.service';
             </thead>
 
             <tbody class="table-body">
-                <tr *ngFor="let invitation of invitationArray; let rowIndex=index">
-                    <td class="table-body-cell id-col">{{invitation.id}}</td>
-                    <td class="table-body-cell user-id-fk-col">{{invitation.appointment_id_fk}}</td>
-                    <td class="table-body-cell start-col">{{appointment.start}}</td>
-                    <td class="table-body-cell end-col">{{appointment.end}}</td>
-                    <td class="table-body-cell description-col">{{appointment.end}}</td>
+                <tr *ngFor="let outOfOfficeEvent of outOfOfficeEventArray; let rowIndex=index">
+                    <td class="table-body-cell id-col">{{outOfOfficeEvent.id}}</td>
+                    <td class="table-body-cell user-id-fk-col">{{outOfOfficeEvent.user_id_fk}}</td>
+                    <td class="table-body-cell start-col">{{outOfOfficeEvent.start}}</td>
+                    <td class="table-body-cell end-col">{{outOfOfficeEvent.end}}</td>
+                    <td class="table-body-cell description-col">{{outOfOfficeEvent.description}}</td>
                 </tr>
             </tbody>
         </table>
