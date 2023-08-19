@@ -10,9 +10,9 @@ import { DateFilter, SingleWeekInterval } from '../model/date-filter';
 export class DateFilterService
 {
     private dateFilterObservable: BehaviorSubject<DateFilter>;
-    private currentWeekDatesObservable: BehaviorSubject<SingleWeekInterval>;
-    private currentWeekIndex: number;
     private weekDateRanges: Array<SingleWeekInterval>;
+    private currentWeekIndex: number;
+    private currentWeekObservable: BehaviorSubject<SingleWeekInterval>;
 
     constructor()
     {
@@ -22,34 +22,36 @@ export class DateFilterService
                 month: new Date().getMonth(),
                 // startDate: new Date(),
                 // endDate: new Date()
-                week: 1
+                weekIndex: 0
             }
         );
-
-        this.currentWeekDatesObservable = new BehaviorSubject<SingleWeekInterval>({ weekStart: new Date(), weekEnd: new Date() });
-
-        this.currentWeekIndex = 1; // first week of the month
         this.weekDateRanges = new Array<SingleWeekInterval>();
+        this.currentWeekIndex = 0; // first week of the month
+
+        this.currentWeekObservable = new BehaviorSubject<SingleWeekInterval>({ weekStart: new Date(), weekEnd: new Date() });
     }
 
     public getDateFilterObservable(): BehaviorSubject<DateFilter> { return this.dateFilterObservable; }
-    public getCurrentWeekDatesObservable(): BehaviorSubject<SingleWeekInterval> { return this.currentWeekDatesObservable; }
+    public getCurrentWeekObservable(): BehaviorSubject<SingleWeekInterval> { return this.currentWeekObservable; }
 
     public setDateFilter(dateFilter: DateFilter): void
     {
         if(dateFilter != null)
         {
             this.dateFilterObservable.next(dateFilter);
-            this.setWeekDateRanges(dateFilter.year, dateFilter.month);
-            this.currentWeekIndex = dateFilter.week;
-            this.currentWeekDatesObservable.next(this.weekDateRanges[this.currentWeekIndex]);
+            this.calculateWeekIntervals(dateFilter.year, dateFilter.month);
+            this.currentWeekIndex = dateFilter.weekIndex;
+            this.currentWeekObservable.next(this.weekDateRanges[this.currentWeekIndex]);
 
-            console.log(`dateFilter year: ${dateFilter.year}`);
-            console.log(`dateFilter month: ${dateFilter.month}`);
+            console.log(`setDateFilter year: ${dateFilter.year}`);
+            console.log(`setDateFilter month: ${dateFilter.month}`);
+            console.log(`setDateFilter weekIndex: ${dateFilter.weekIndex}`);
+            console.log(`setDateFilter weekStart: ${this.weekDateRanges[this.currentWeekIndex].weekStart}`
+                        + `weekEnd: ${this.weekDateRanges[this.currentWeekIndex].weekEnd}`);
         }
     }
 
-    /* helper method that calculates the number of weeks in a scpecific month, from a specific year;
+    /* Helper method that calculates the number of weeks in a scpecific month, from a specific year;
     month is in range 1...12 */
     public getWeekCount(year: number, month: number): number
     {
@@ -92,7 +94,7 @@ export class DateFilterService
     /* Helper method that gererates the dates between the weeks of o month from a certain year.
     For each week, this method generates two dates: the date at the start of the week and the date
     at the end of the week. */
-    private setWeekDateRanges(year: number, month: number): void
+    private calculateWeekIntervals(year: number, month: number): void
     {
         const numberOfWeeks = this.getWeekCount(year, month);
         const weekDatesArray: Array<{weekStart: Date, weekEnd: Date}>
@@ -139,6 +141,4 @@ export class DateFilterService
 
         this.weekDateRanges = weekDatesArray;
     }
-
-
 }
