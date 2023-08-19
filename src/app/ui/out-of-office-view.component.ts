@@ -36,17 +36,10 @@ import { DateFilterService } from '../service/date-filter.service';
 })
 export class OutOfOfficeViewComponent implements OnInit
 {
-    protected dateFilter: DateFilter;
     protected outOfOfficeEventArray: Array<OutOfOfficeEvent>;
 
-    public constructor(protected eventService: EventsService, protected dateFilterService: DateFilterService)
+    public constructor(protected eventService: EventsService)
     {
-        this.dateFilter = {
-            year: new Date().getFullYear(),
-            month: new Date().getMonth(),
-            weekIndex: 0 // first week of the month
-        };
-
         this.outOfOfficeEventArray = new Array<OutOfOfficeEvent>(5 * 5 * 4);
     }
 
