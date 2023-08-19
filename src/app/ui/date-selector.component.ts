@@ -158,6 +158,9 @@ export class DateSelectorComponent implements OnInit
     {
         const target = event.target as HTMLSelectElement;
 
+        this.dateFilter.weekIndex = parseInt(target.value);
+        this.dateFilterService.setDateFilter(this.dateFilter);
+
         console.log(`selected week: ${target.value}`)
     }
 }
