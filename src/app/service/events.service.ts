@@ -10,7 +10,7 @@ import { Invitation } from '../model/invitation';
 import { OutOfOfficeEvent } from '../model/out-of-office-event';
 import { User } from '../model/user';
 import { DateFilterService } from './date-filter.service';
-import { DateFilter, WeekInterval } from '../model/date-filter';
+import { DateFilter, SingleWeekInterval } from '../model/date-filter';
 
 
 @Injectable({
@@ -19,7 +19,7 @@ import { DateFilter, WeekInterval } from '../model/date-filter';
 export class EventsService
 {
     private currentUser: User;
-    private weekDates: WeekInterval;
+    private weekDates: SingleWeekInterval;
     private startDateString: string = "";
     private endDateString: string = "";
 
@@ -81,7 +81,7 @@ export class EventsService
         //                 );
 
         this.dateService.getCurrentWeekDatesObservable()
-                        .subscribe( (weekDates: WeekInterval) =>
+                        .subscribe( (weekDates: SingleWeekInterval) =>
                             {
                                 this.weekDates = weekDates;
 

@@ -5,8 +5,8 @@ export interface DateFilter
     week: number; 
 }
 
-export interface WeekInterval
+export interface SingleWeekInterval
 {
-    weekStart: Date;
-    weekEnd: Date;
+    weekStart: Date; // the first day of week, could be different tha Monday
+    weekEnd: Date; // the last day of the week, could be different than Sunday
 }
