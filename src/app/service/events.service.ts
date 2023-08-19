@@ -84,6 +84,7 @@ export class EventsService
                                 
                                 this.fetchHostedAppointments();
                                 this.fetchInvitations();
+                                this.fetchOutOfOfficeEvents();
                             }
                         );
     }
