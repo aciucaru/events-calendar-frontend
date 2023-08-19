@@ -12,11 +12,12 @@ export class DateFilterService
     // this observable is mainly for UI, so that any UI element can correctly display the select year, month or week
     private dateFilterObservable: BehaviorSubject<DateFilter>;
     // array of objects that contain the start and end date of a week
-    private weekDateRanges: Array<SingleWeekInterval>;
+    private weekDateIntervals: Array<SingleWeekInterval>;
     private currentWeekIndex: number; // the index a the current select week, it's from 0 to 5
     // the actual observable used by the service that fetches data from the back-end, it contains a start data and an
     // end date which are used as query parameters in the URL
     private currentWeekObservable: BehaviorSubject<SingleWeekInterval>;
+    private daysOfCurrentWeekObservable: BehaviorSubject<Array<Date>>;
 
     constructor()
     {
@@ -24,19 +25,21 @@ export class DateFilterService
             {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth(),
-                // startDate: new Date(),
-                // endDate: new Date()
                 weekIndex: 0
             }
         );
-        this.weekDateRanges = new Array<SingleWeekInterval>();
+        this.weekDateIntervals = new Array<SingleWeekInterval>();
         this.currentWeekIndex = 0; // first week of the month
 
-        this.currentWeekObservable = new BehaviorSubject<SingleWeekInterval>({ weekStart: new Date(), weekEnd: new Date() });
+        this.currentWeekObservable
+            = new BehaviorSubject<SingleWeekInterval>({ weekStart: new Date(), weekEnd: new Date() });
+
+        this.daysOfCurrentWeekObservable = new BehaviorSubject<Array<Date>>(new Array<Date>());
     }
 
     public getDateFilterObservable(): BehaviorSubject<DateFilter> { return this.dateFilterObservable; }
     public getCurrentWeekObservable(): BehaviorSubject<SingleWeekInterval> { return this.currentWeekObservable; }
+    public getDaysOfCurrentWeekObservable(): BehaviorSubject<Array<Date>> { return this.daysOfCurrentWeekObservable; }
 
     public setDateFilter(dateFilter: DateFilter): void
     {
@@ -45,13 +48,13 @@ export class DateFilterService
             this.dateFilterObservable.next(dateFilter);
             this.calculateWeekIntervals(dateFilter.year, dateFilter.month);
             this.currentWeekIndex = dateFilter.weekIndex;
-            this.currentWeekObservable.next(this.weekDateRanges[this.currentWeekIndex]);
+            this.currentWeekObservable.next(this.weekDateIntervals[this.currentWeekIndex]);
 
             console.log(`setDateFilter year: ${dateFilter.year}`);
             console.log(`setDateFilter month: ${dateFilter.month}`);
             console.log(`setDateFilter weekIndex: ${dateFilter.weekIndex}`);
-            console.log(`setDateFilter weekStart: ${this.weekDateRanges[this.currentWeekIndex].weekStart}`
-                        + `weekEnd: ${this.weekDateRanges[this.currentWeekIndex].weekEnd}`);
+            console.log(`setDateFilter weekStart: ${this.weekDateIntervals[this.currentWeekIndex].weekStart}`
+                        + `weekEnd: ${this.weekDateIntervals[this.currentWeekIndex].weekEnd}`);
         }
     }
 
@@ -66,10 +69,10 @@ export class DateFilterService
         // console.log(`last day of month: ${lastDayOfMonth}`);
 
         let startDayIndexOfFirstWeek = firstDayOfMonth.getDay(); // returns 0 to 6 (Sunday to Saturday)
-        if(startDayIndexOfFirstWeek === 0) startDayIndexOfFirstWeek = 7; // Sunday is 0, but we wanted 7
+        if(startDayIndexOfFirstWeek === 0) startDayIndexOfFirstWeek = 7; // adjust Sunday which is 0, but we wanted 7
 
         let endDayIndexOfLastWeek = lastDayOfMonth.getDay(); // returns 0 to 6 (Sunday to Saturday)
-        if(endDayIndexOfLastWeek === 0) endDayIndexOfLastWeek = 7; // Sunday is 0, but we wanted 7
+        if(endDayIndexOfLastWeek === 0) endDayIndexOfLastWeek = 7; // adjust Sunday which is 0, but we wanted 7
 
         // console.log(`startDayIndexOfFirstWeek: ${startDayIndexOfFirstWeek}`);
         // console.log(`endDayIndexOfLastWeek: ${endDayIndexOfLastWeek}`);
@@ -143,6 +146,13 @@ export class DateFilterService
 
         // console.table(weekDatesArray);
 
-        this.weekDateRanges = weekDatesArray;
+        this.weekDateIntervals = weekDatesArray;
+    }
+
+    private calculateDaysOfCurrentWeek(): void
+    {
+        const currentWeek: SingleWeekInterval = this.weekDateIntervals[this.currentWeekIndex];
+        const firstDayOfCurrentWeek = currentWeek.weekStart;
+        
     }
 }
