@@ -1,0 +1,61 @@
+.main-container
+{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 10px;
+
+    padding: 10px;
+    margin: 0px;
+
+    border: solid 1px hsl(230, 20%, 25%);
+}
+
+.data-table
+{
+    border-collapse: collapse;
+    color: hsl(230, 20%, 65%);
+}
+
+.table-header
+{
+    display: block;
+    width: 100%;
+
+    background-color: hsl(230, 18%, 10%);
+    box-shadow: 2px 2px 20px 2px hsla(0, 0%, 10%, 0.5);
+}
+
+.table-body
+{
+    display: block;
+    height: 800px;
+    overflow-y: scroll;
+}
+
+.id-col { width: 100px; }
+.meeting-id-fk-col { width: 125px; }
+.active-col { width: 100px; }
+.start-col { width: 200px; }
+.end-col { width: 200px; }
+.meeting-event-col { width: 300px; }
+
+.table-header-cell
+{
+    overflow: hidden;
+    border: solid 1px hsl(230, 20%, 30%);
+
+    padding: 5px;
+    margin: 0px;
+}
+
+.table-body-cell
+{
+    overflow: hidden;
+    border: solid 1px hsl(230, 20%, 30%);
+
+    padding: 5px;
+    margin: 0px;
+}
