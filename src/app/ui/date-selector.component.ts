@@ -58,7 +58,7 @@ export class DateSelectorComponent implements OnInit
         this.dateFilter = {
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
-            week: 1 // first week of the month
+            weekIndex: 0 // first week of the month
         };
 
         this.yearOptionArray = new Array<number>(5);
