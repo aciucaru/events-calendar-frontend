@@ -9,9 +9,13 @@ import { DateFilter, SingleWeekInterval } from '../model/date-filter';
 })
 export class DateFilterService
 {
+    // this observable is mainly for UI, so that any UI element can correctly display the select year, month or week
     private dateFilterObservable: BehaviorSubject<DateFilter>;
+    // array of objects that contain the start and end date of a week
     private weekDateRanges: Array<SingleWeekInterval>;
-    private currentWeekIndex: number;
+    private currentWeekIndex: number; // the index a the current select week, it's from 0 to 5
+    // the actual observable used by the service that fetches data from the back-end, it contains a start data and an
+    // end date which are used as query parameters in the URL
     private currentWeekObservable: BehaviorSubject<SingleWeekInterval>;
 
     constructor()
