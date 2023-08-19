@@ -48,29 +48,29 @@ import { EventsService } from '../service/events.service';
 })
 export class HostedAppointmentViewComponent implements OnInit
 {
-    protected dateFilter: DateFilter;
+    // protected dateFilter: DateFilter;
     protected hostedAppointmentArray: Array<MeetingAppointment>;
 
     public constructor(protected eventService: EventsService, protected dateFilterService: DateFilterService)
     {
-        this.dateFilter = {
-            year: new Date().getFullYear(),
-            month: new Date().getMonth(),
-            weekIndex: 0 // first week of the month
-        };
+        // this.dateFilter = {
+        //     year: new Date().getFullYear(),
+        //     month: new Date().getMonth(),
+        //     weekIndex: 0 // first week of the month
+        // };
 
         this.hostedAppointmentArray = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
     }
 
     public ngOnInit(): void
     {
-        this.dateFilterService
-            .getDateFilterObservable()
-            .subscribe( (dateFilter: DateFilter) =>
-                            {
-                                this.dateFilter = dateFilter;
-                            }
-                        );
+        // this.dateFilterService
+        //     .getDateFilterObservable()
+        //     .subscribe( (dateFilter: DateFilter) =>
+        //                     {
+        //                         this.dateFilter = dateFilter;
+        //                     }
+        //                 );
                  
         this.eventService
             .getHostedAppointmentArrayObservable()

@@ -43,29 +43,29 @@ import { Invitation } from '../model/invitation';
 })
 export class InvitationsViewComponent
 {
-    protected dateFilter: DateFilter;
+    // protected dateFilter: DateFilter;
     protected invitationArray: Array<Invitation>;
 
     public constructor(protected eventService: EventsService, protected dateFilterService: DateFilterService)
     {
-        this.dateFilter = {
-            year: new Date().getFullYear(),
-            month: new Date().getMonth(),
-            weekIndex: 0 // first week of the month
-        };
+        // this.dateFilter = {
+        //     year: new Date().getFullYear(),
+        //     month: new Date().getMonth(),
+        //     weekIndex: 0 // first week of the month
+        // };
 
         this.invitationArray = new Array<Invitation>(5 * 5 * 8 * 8);
     }
 
     public ngOnInit(): void
     {
-        this.dateFilterService
-                .getDateFilterObservable()
-                .subscribe( (dateFilter: DateFilter) =>
-                                {
-                                    this.dateFilter = dateFilter;
-                                }
-                            );
+        // this.dateFilterService
+        //         .getDateFilterObservable()
+        //         .subscribe( (dateFilter: DateFilter) =>
+        //                         {
+        //                             this.dateFilter = dateFilter;
+        //                         }
+        //                     );
                  
         this.eventService.getInvitationArrayObservable()
                             .subscribe( (invitationArray: Array<Invitation>) =>
