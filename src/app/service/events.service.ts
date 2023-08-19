@@ -141,4 +141,24 @@ export class EventsService
                             }
                         );
     }
+
+    public fetchOutOfOfficeEvents(): void
+    {
+        const userId = this.currentUser.id;
+
+        let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/outOfOfficeEventsByDate`
+                        + `?startDate=${this.startDateString}&endDate=${this.endDateString}`;
+
+        this.httpClient.get<Array<OutOfOfficeEvent>>(apiUrl)
+                        .pipe()
+                        .subscribe( (outOfOfficeEvents: Array<OutOfOfficeEvent>) =>
+                            {
+                                this.outOfOfficeEventArray = outOfOfficeEvents;
+                                this.outOfOfficeEventArrayObservable.next(outOfOfficeEvents);
+                                console.log("out-of-office fetched");
+                                // console.table(invitations);
+                                console.log(`fetch inv: start: ${this.startDateString} end: ${this.endDateString}`);
+                            }
+                        );
+    }
 }
