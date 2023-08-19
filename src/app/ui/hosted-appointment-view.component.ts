@@ -50,7 +50,7 @@ export class HostedAppointmentViewComponent implements OnInit
 {
     protected hostedAppointmentArray: Array<MeetingAppointment>;
 
-    public constructor(protected eventService: EventsService, protected dateFilterService: DateFilterService)
+    public constructor(protected eventService: EventsService)
     {
         this.hostedAppointmentArray = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
     }

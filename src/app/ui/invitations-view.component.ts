@@ -45,7 +45,7 @@ export class InvitationsViewComponent
 {
     protected invitationArray: Array<Invitation>;
 
-    public constructor(protected eventService: EventsService, protected dateFilterService: DateFilterService)
+    public constructor(protected eventService: EventsService)
     {
         this.invitationArray = new Array<Invitation>(5 * 5 * 8 * 8);
     }
