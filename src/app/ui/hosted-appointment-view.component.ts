@@ -65,19 +65,20 @@ export class HostedAppointmentViewComponent implements OnInit
     public ngOnInit(): void
     {
         this.dateFilterService
-                .getDateFilterObservable()
-                .subscribe( (dateFilter: DateFilter) =>
-                                {
-                                    this.dateFilter = dateFilter;
-                                }
-                            );
+            .getDateFilterObservable()
+            .subscribe( (dateFilter: DateFilter) =>
+                            {
+                                this.dateFilter = dateFilter;
+                            }
+                        );
                  
-        this.eventService.getHostedAppointmentArrayObservable()
-                            .subscribe( (appointmentArray: Array<MeetingAppointment>) =>
-                                {
-                                    this.hostedAppointmentArray = appointmentArray;
-                                    // console.table(appointmentArray);
-                                }
-                            );
+        this.eventService
+            .getHostedAppointmentArrayObservable()
+            .subscribe( (appointmentArray: Array<MeetingAppointment>) =>
+                {
+                    this.hostedAppointmentArray = appointmentArray;
+                    // console.table(appointmentArray);
+                }
+            );
     }
 }
