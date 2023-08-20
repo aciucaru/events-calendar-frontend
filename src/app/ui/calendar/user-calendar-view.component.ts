@@ -9,11 +9,10 @@ import { SingleWeekInterval } from 'src/app/model/date-filter';
   selector: 'user-calendar-view',
   template: `
     <div class="main-container">
-        <single-day-calendar-view></single-day-calendar-view>
-        <single-day-calendar-view></single-day-calendar-view>
-        <single-day-calendar-view></single-day-calendar-view>
-        <single-day-calendar-view></single-day-calendar-view>
-        <single-day-calendar-view></single-day-calendar-view>
+        <ng-container
+        *ngFor="let day of [].constructor(daysCount).fill(1); let dayIndex = index;">
+            <single-day-calendar-view [dayOfweekIndex]="dayIndex"></single-day-calendar-view>
+        </ng-container>
     </div>
   `,
   styles: [],
@@ -22,6 +21,7 @@ import { SingleWeekInterval } from 'src/app/model/date-filter';
 export class UserCalendarViewComponent implements OnInit
 {
     protected currentWeekInterval: SingleWeekInterval;
+    protected daysCount: number = 0;
 
     public constructor(protected dateFilterService: DateFilterService)
     {
@@ -30,10 +30,11 @@ export class UserCalendarViewComponent implements OnInit
 
     public ngOnInit(): void
     {
-        this.dateFilterService.getCurrentWeekObservable()
+        this.dateFilterService.getCurrentWeekIntervalObservable()
                                 .subscribe( (weekInterval: SingleWeekInterval) =>
                                     {
                                         this.currentWeekInterval = weekInterval;
+                                        this.daysCount = weekInterval.calculateNumOfDays();
                                     }
                                 );
     }
