@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { DateFilterService } from '../service/date-filter.service';
-import { EventsService } from '../service/events.service';
+import { DateFilterService } from '../../service/date-filter.service';
+import { EventsService } from '../../service/events.service';
 
-import { DateFilter } from '../model/date-filter';
+import { DateFilter } from '../../model/date-filter';
 
-import { Invitation } from '../model/events';
+import { Invitation } from '../../model/events';
 
 // id: number;
 // appointment_id_fk: number;

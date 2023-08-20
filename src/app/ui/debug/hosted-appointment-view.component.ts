@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DateFilterService } from '../service/date-filter.service';
+import { DateFilterService } from '../../service/date-filter.service';
 
-import { MeetingAppointment } from '../model/events';
-import { DateFilter } from '../model/date-filter';
-import { EventsService } from '../service/events.service';
+import { MeetingAppointment } from '../../model/events';
+import { DateFilter } from '../../model/date-filter';
+import { EventsService } from '../../service/events.service';
 
 
 // id: number;

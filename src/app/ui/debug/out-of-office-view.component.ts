@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DateFilter } from '../model/date-filter';
-import { OutOfOfficeEvent } from '../model/events';
-import { EventsService } from '../service/events.service';
-import { DateFilterService } from '../service/date-filter.service';
+import { DateFilter } from '../../model/date-filter';
+import { OutOfOfficeEvent } from '../../model/events';
+import { EventsService } from '../../service/events.service';
+import { DateFilterService } from '../../service/date-filter.service';
 
 @Component({
   selector: 'out-of-office-view',
