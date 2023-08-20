@@ -67,7 +67,7 @@ export class EventsService
                             }
                         );
 
-        this.dateService.getCurrentWeekObservable()
+        this.dateService.getCurrentWeekIntervalObservable()
                         .subscribe( (weekInterval: SingleWeekInterval) =>
                             {
                                 this.weekInterval = weekInterval;
