@@ -20,23 +20,12 @@ export class EventsService
 {
     private currentUser: User;
     private weekInterval: SingleWeekInterval;
+    private daysOfCurrentWeek: Array<Date>;
     private startDateString: string = "";
     private endDateString: string = "";
-    private daysOfCurrentWeek: Array<Date>;
 
-    // private dateFilter: DateFilter;
-
-    /* reusable buffer array for the corresponding BehaviorSubject, so that no new array is created everytime
-    the BehaviorSubject needs to ghange and needs a new array */
-    private hostedAppointmentArray: Array<MeetingAppointment>;
     private hostedAppointmentArrayObservable: BehaviorSubject<Array<MeetingAppointment>>;
-
-    /* reusable buffer array for the corresponding BehaviorSubject */
-    private invitationArray: Array<Invitation>;
     private invitationArrayObservable: BehaviorSubject<Array<Invitation>>;
-
-    /* reusable buffer array for the corresponding BehaviorSubject */
-    private outOfOfficeEventArray: Array<OutOfOfficeEvent>;
     private outOfOfficeEventArrayObservable: BehaviorSubject<Array<OutOfOfficeEvent>>;
 
     private hostedAppointmentsByWeekDaysObservable: BehaviorSubject<Array<SingleDayHostedAppointments>>;
@@ -51,21 +40,12 @@ export class EventsService
         this.weekInterval = new SingleWeekInterval(new Date(), new Date());
         this.daysOfCurrentWeek = new Array<Date>();
 
-        /* reusable buffer array which has a initial capacity of:
-        5 weeks * 5 days/week x 8 hours/day x 4 hosted appointments/hour*/
-        this.hostedAppointmentArray = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
-        this.hostedAppointmentArrayObservable
+        this.hostedAppointmentArrayObservable // new Array<MeetingAppointment>(5 * 5 * 8 * 4)
                  = new BehaviorSubject<Array<MeetingAppointment>>(new Array<MeetingAppointment>());
-    
-        /* reusable buffer array which has a initial capacity of:
-        5 weeks * 5 days/week x 8 hours/day x 8 meeting invitations/hour */
-        this.invitationArray = new Array<Invitation>(5 * 5 * 8 * 8)
+        // new Array<Invitation>(5 * 5 * 8 * 8)
         this.invitationArrayObservable = new BehaviorSubject<Array<Invitation>>(new Array<Invitation>());
     
-        /* reusable buffer array which has a initial capacity of:
-        5 weeks * 5 days/week x 4 out of office events/day */
-        this.outOfOfficeEventArray = new Array<OutOfOfficeEvent>(5 * 5 * 4);
-        this.outOfOfficeEventArrayObservable
+        this.outOfOfficeEventArrayObservable // new Array<Invitation>(5 * 5 * 8 * 8)
                                     = new BehaviorSubject<Array<OutOfOfficeEvent>>(new Array<OutOfOfficeEvent>());
 
         this.hostedAppointmentsByWeekDaysObservable =
@@ -98,16 +78,13 @@ export class EventsService
                                 this.startDateString = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
                                 this.endDateString = `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDate()}`;
                                 
+                                this.daysOfCurrentWeek = weekInterval.calculateDaysOfCurrentWeek();
+
                                 this.fetchAllHostedAppointmentsInCurrentWeek();
                                 this.fetchAllInvitationsInCurrentWeek();
                                 this.fetchAllOutOfOfficeEventsInCurrentWeek();
-                            }
-                        );
 
-        this.dateService.getDaysOfCurrentWeekObservable()
-                        .subscribe( (daysOfCurrentWeek: Array<Date>) =>
-                            {
-                                this.daysOfCurrentWeek = daysOfCurrentWeek;
+                                this.fetchAllHostedAppointmentsByDays();
                             }
                         );
     }
@@ -132,6 +109,7 @@ export class EventsService
     public getOutOfOfficeEventsByWeekDaysObservable(): BehaviorSubject<Array<SingleDayOutOfOfficeEvents>>
     { return this.outOfOfficeEventsByWeekDaysObservable; }
 
+
     public fetchAllHostedAppointmentsInCurrentWeek(): void
     {
         // console.log(`fetchHostedAppointments startDate: ${this.dateFilter.startDate}`);
@@ -148,7 +126,6 @@ export class EventsService
                         .pipe()
                         .subscribe( (appointments: Array<MeetingAppointment>) =>
                             {
-                                this.hostedAppointmentArray = appointments;
                                 this.hostedAppointmentArrayObservable.next(appointments);
                                 console.log("appointments fetched");
                                 // console.table(appointments);
@@ -168,7 +145,6 @@ export class EventsService
                         .pipe()
                         .subscribe( (invitations: Array<Invitation>) =>
                             {
-                                this.invitationArray = invitations;
                                 this.invitationArrayObservable.next(invitations);
                                 console.log("appointments fetched");
                                 // console.table(invitations);
@@ -188,7 +164,6 @@ export class EventsService
                         .pipe()
                         .subscribe( (outOfOfficeEvents: Array<OutOfOfficeEvent>) =>
                             {
-                                this.outOfOfficeEventArray = outOfOfficeEvents;
                                 this.outOfOfficeEventArrayObservable.next(outOfOfficeEvents);
                                 console.log("out-of-office fetched");
                                 // console.table(invitations);
@@ -199,42 +174,52 @@ export class EventsService
 
 
     /////////////////////////////////////////////////////////
-    public fetchHostedAppointmentsInDay(day: Date): void
+    public fetchAllHostedAppointmentsByDays(): void
     {
-        if(day != null)
-        {
-            const userId = this.currentUser.id;
+        // console.log(`fetchHostedAppointments startDate: ${this.dateFilter.startDate}`);
+        // console.log(`fetchHostedAppointments endDate: ${this.dateFilter.endDate}`);
 
-            const startDate = day;
-            const endDate = new Date(startDate);
-            endDate.setDate(endDate.getDate() + 1);
+        // console.log(this.dateFilter.endDate);
 
-            const startDateString = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
-            const endDateString = `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDate()}`;
-    
-            let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeHostedAppointmentsByDate`
-                            + `?startDate=${this.startDateString}&endDate=${this.endDateString}`;
-    
-            this.httpClient.get<Array<MeetingAppointment>>(apiUrl)
-                            .pipe()
-                            .subscribe( (appointments: Array<MeetingAppointment>) =>
+        const userId = this.currentUser.id;
+
+        let apiUrl = `http://127.0.0.1:8001/api/user/${userId}/activeHostedAppointmentsByDate`
+                        + `?startDate=${this.startDateString}&endDate=${this.endDateString}`;
+
+        this.httpClient.get<Array<MeetingAppointment>>(apiUrl)
+                        .pipe()
+                        .subscribe( (appointments: Array<MeetingAppointment>) =>
+                            {
+                                const daysCount = this.daysOfCurrentWeek.length;
+
+                                const hostedAppointmentsByWeekDays = new Array<SingleDayHostedAppointments>(daysCount);
+                                let currentDayAppointments: Array<MeetingAppointment>;
+                                let startDate: Date;
+                                let endDate: Date;
+                                for(let i=0; i<daysCount; i++)
                                 {
-                                    this.hostedAppointmentArray = appointments;
-                                    this.hostedAppointmentArrayObservable.next(appointments);
-                                    console.log("appointments fetched");
-                                    // console.table(appointments);
-                                    console.log(`fetch app: start: ${this.startDateString} end: ${this.endDateString}`);
+                                    startDate = new Date(this.weekInterval.getStart());
+                                    startDate.setDate(startDate.getDate() + i);
+                        
+                                    endDate = new Date(startDate);
+                                    endDate.setDate(endDate.getDate() + 1);
+
+                                    currentDayAppointments = appointments.filter( (appointment: MeetingAppointment) =>
+                                        {
+                                            return (appointment.start.getTime() >= startDate.getTime()
+                                                    && appointment.start.getTime() <= endDate.getTime());
+                                        }
+                                    )
+
+                                    hostedAppointmentsByWeekDays[i] = new SingleDayHostedAppointments();
+                                    hostedAppointmentsByWeekDays[i].setArray(currentDayAppointments);
                                 }
-                            );
-        }
-    }
 
-    public fetchHostedAppointmentsInCurrentWeek(): void
-    {
-        const hostedAppointmentsCount = this.hostedAppointmentsByWeekDaysObservable.getValue().length;
-        for(let i=0; i<hostedAppointmentsCount; i++)
-        {
-
-        }
+                                this.hostedAppointmentsByWeekDaysObservable.next(hostedAppointmentsByWeekDays);
+                                console.log("appointments fetched");
+                                console.table(hostedAppointmentsByWeekDays);
+                                console.log(`fetch app: start: ${this.startDateString} end: ${this.endDateString}`);
+                            }
+                        );
     }
 }
