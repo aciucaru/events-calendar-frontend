@@ -6,13 +6,15 @@ import { Component } from '@angular/core';
     <div class="main-container">
         <top-toolbar></top-toolbar>
         <!-- <hosted-appointment-view></hosted-appointment-view> -->
-        <invitations-view></invitations-view>
-        <tab-panel>
+        <!-- <invitations-view></invitations-view> -->
+        <!-- <out-of-office-view></out-of-office-view> -->
+        <user-calendar-view></user-calendar-view>
+        <!-- <tab-panel>
             <tab-item>A</tab-item>
             <tab-item>B</tab-item>
             <tab-item>C</tab-item>
             <tab-item>D</tab-item>
-        </tab-panel>
+        </tab-panel> -->
     </div>
   `,
   styles: [],
