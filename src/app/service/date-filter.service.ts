@@ -11,12 +11,15 @@ export class DateFilterService
 {
     // this observable is mainly for UI, so that any UI element can correctly display the select year, month or week
     private dateFilterObservable: BehaviorSubject<DateFilter>;
+
     // array of objects that contain the start and end date of all weeks in the current month of the current year
     private weekDateIntervals: Array<SingleWeekInterval>;
-    private currentWeekIndex: number; // the index a the current select week, it's from 0 to 5
+
+    private currentWeekIndex: number; // the index of the current selected week, from 0 to 5
+
     // the actual observable used by the service that fetches data from the back-end, it contains a start data and an
     // end date which are used as query parameters in the URL
-    private currentWeekObservable: BehaviorSubject<SingleWeekInterval>;
+    private currentWeekIntervalObservable: BehaviorSubject<SingleWeekInterval>;
     
     private daysOfCurrentWeek: Array<Date>;
     // private daysOfCurrentWeekObservable: BehaviorSubject<Array<Date>>;
@@ -33,7 +36,7 @@ export class DateFilterService
         this.weekDateIntervals = new Array<SingleWeekInterval>();
         this.currentWeekIndex = 0; // first week of the month
 
-        this.currentWeekObservable
+        this.currentWeekIntervalObservable
             = new BehaviorSubject<SingleWeekInterval>(new SingleWeekInterval(new Date(), new Date()));
 
         this.daysOfCurrentWeek = new Array<Date>();
@@ -41,7 +44,7 @@ export class DateFilterService
     }
 
     public getDateFilterObservable(): BehaviorSubject<DateFilter> { return this.dateFilterObservable; }
-    public getCurrentWeekObservable(): BehaviorSubject<SingleWeekInterval> { return this.currentWeekObservable; }
+    public getCurrentWeekIntervalObservable(): BehaviorSubject<SingleWeekInterval> { return this.currentWeekIntervalObservable; }
     // public getDaysOfCurrentWeekObservable(): BehaviorSubject<Array<Date>> { return this.daysOfCurrentWeekObservable; }
 
     public setDateFilter(dateFilter: DateFilter): void
@@ -52,9 +55,9 @@ export class DateFilterService
 
             this.calculateWeekIntervals(dateFilter.year, dateFilter.month);
             this.currentWeekIndex = dateFilter.weekIndex;
-            this.currentWeekObservable.next(this.weekDateIntervals[this.currentWeekIndex]);
+            this.currentWeekIntervalObservable.next(this.weekDateIntervals[this.currentWeekIndex]);
 
-            this.daysOfCurrentWeek = this.currentWeekObservable.getValue().calculateDaysOfCurrentWeek();
+            this.daysOfCurrentWeek = this.currentWeekIntervalObservable.getValue().calculateDaysOfCurrentWeek();
             // this.daysOfCurrentWeekObservable.next(this.daysOfCurrentWeek);
 
             console.log(`setDateFilter year: ${dateFilter.year}`);
