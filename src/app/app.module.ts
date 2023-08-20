@@ -14,8 +14,8 @@ import { InvitationsViewComponent } from './ui/invitations-view.component';
 import { TabPanelComponent } from './ui/tab-panel.component';
 import { TabItemComponent } from './ui/tab-item.component';
 import { OutOfOfficeViewComponent } from './ui/out-of-office-view.component';
-import { UserCalendarViewComponent } from './ui/user-calendar-view.component';
-import { SingleDayCalendarViewComponent } from './ui/single-day-calendar-view.component';
+import { UserCalendarViewComponent } from './ui/calendar/user-calendar-view.component';
+import { SingleDayCalendarViewComponent } from './ui/calendar/single-day-calendar-view.component';
 
 
 @NgModule({
