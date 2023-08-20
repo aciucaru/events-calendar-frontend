@@ -11,12 +11,14 @@ export class DateFilterService
 {
     // this observable is mainly for UI, so that any UI element can correctly display the select year, month or week
     private dateFilterObservable: BehaviorSubject<DateFilter>;
-    // array of objects that contain the start and end date of a week
+    // array of objects that contain the start and end date of all weeks in the current month of the current year
     private weekDateIntervals: Array<SingleWeekInterval>;
     private currentWeekIndex: number; // the index a the current select week, it's from 0 to 5
     // the actual observable used by the service that fetches data from the back-end, it contains a start data and an
     // end date which are used as query parameters in the URL
     private currentWeekObservable: BehaviorSubject<SingleWeekInterval>;
+    
+    private daysOfCurrentWeek: Array<Date>;
     private daysOfCurrentWeekObservable: BehaviorSubject<Array<Date>>;
 
     constructor()
@@ -34,6 +36,7 @@ export class DateFilterService
         this.currentWeekObservable
             = new BehaviorSubject<SingleWeekInterval>({ weekStart: new Date(), weekEnd: new Date() });
 
+        this.daysOfCurrentWeek = new Array<Date>();
         this.daysOfCurrentWeekObservable = new BehaviorSubject<Array<Date>>(new Array<Date>());
     }
 
@@ -46,9 +49,13 @@ export class DateFilterService
         if(dateFilter != null)
         {
             this.dateFilterObservable.next(dateFilter);
+
             this.calculateWeekIntervals(dateFilter.year, dateFilter.month);
             this.currentWeekIndex = dateFilter.weekIndex;
             this.currentWeekObservable.next(this.weekDateIntervals[this.currentWeekIndex]);
+
+            this.calculateDaysOfCurrentWeek();
+            this.daysOfCurrentWeekObservable.next(this.daysOfCurrentWeek);
 
             console.log(`setDateFilter year: ${dateFilter.year}`);
             console.log(`setDateFilter month: ${dateFilter.month}`);
@@ -151,8 +158,26 @@ export class DateFilterService
 
     private calculateDaysOfCurrentWeek(): void
     {
+        const startDaysOfCurrentWeek: Array<Date> = new Array<Date>(this.weekDateIntervals.length);
         const currentWeek: SingleWeekInterval = this.weekDateIntervals[this.currentWeekIndex];
+
+        const numberOfDaysInCurrentWeek
+                = 1 + Math.round((currentWeek.weekEnd.getTime() - currentWeek.weekStart.getTime()) / (1000 * 3600 * 24));
+        // console.log(`number of days in week: ${numberOfDaysInCurrentWeek}`);
+
         const firstDayOfCurrentWeek = currentWeek.weekStart;
+        let currentWeekFirstDay: Date = new Date(firstDayOfCurrentWeek);
+
+        for(let i=0; i<numberOfDaysInCurrentWeek; i++)
+        {
+            currentWeekFirstDay = new Date(firstDayOfCurrentWeek);
+            currentWeekFirstDay.setDate(firstDayOfCurrentWeek.getDate() + i); // calculate the first day of current week 
+
+            startDaysOfCurrentWeek[i] = currentWeekFirstDay; // assign first day to arrays of dates
+        }
+
+        // console.log(startDaysOfCurrentWeek);
         
+        this.daysOfCurrentWeek = startDaysOfCurrentWeek;
     }
 }
