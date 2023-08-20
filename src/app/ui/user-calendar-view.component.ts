@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { MeetingAppointment } from '../model/meeting-appointment';
-import { Invitation } from '../model/invitation';
+import { MeetingAppointment } from '../model/events';
+import { Invitation } from '../model/events';
 import { EventsService } from '../service/events.service';
 
 @Component({

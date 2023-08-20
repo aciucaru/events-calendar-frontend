@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { EventsService } from '../service/events.service';
 import { DateFilterService } from '../service/date-filter.service';
 
-import { MeetingAppointment } from '../model/meeting-appointment';
-import { Invitation } from '../model/invitation';
-import { OutOfOfficeEvent } from '../model/out-of-office-event';
 import { DateFilter } from '../model/date-filter';
 
 @Component({

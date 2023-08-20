@@ -5,7 +5,7 @@ import { EventsService } from '../service/events.service';
 
 import { DateFilter } from '../model/date-filter';
 
-import { Invitation } from '../model/invitation';
+import { Invitation } from '../model/events';
 
 // id: number;
 // appointment_id_fk: number;
