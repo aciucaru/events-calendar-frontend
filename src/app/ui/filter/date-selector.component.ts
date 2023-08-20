@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DateFilterService } from '../service/date-filter.service';
+import { DateFilterService } from '../../service/date-filter.service';
 
-import { DateFilter } from '../model/date-filter';
+import { DateFilter } from '../../model/date-filter';
 
 @Component({
   selector: 'date-selector',
