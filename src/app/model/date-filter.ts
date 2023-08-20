@@ -80,6 +80,14 @@ export class SingleDayHostedAppointments
     {
         this.hostedAppointmentArray = new Array<MeetingAppointment>(5 * 5 * 8 * 4);
     }
+
+    public setArray(hostedAppointmentArray: Array<MeetingAppointment>): void
+    {
+        if(hostedAppointmentArray != null)
+            this.hostedAppointmentArray = hostedAppointmentArray;
+    }
+
+    public getArray(): Array<MeetingAppointment> { return this.hostedAppointmentArray; }
 }
 
 export class SingleDayInvitations
