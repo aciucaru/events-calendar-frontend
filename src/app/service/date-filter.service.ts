@@ -19,7 +19,7 @@ export class DateFilterService
     private currentWeekObservable: BehaviorSubject<SingleWeekInterval>;
     
     private daysOfCurrentWeek: Array<Date>;
-    private daysOfCurrentWeekObservable: BehaviorSubject<Array<Date>>;
+    // private daysOfCurrentWeekObservable: BehaviorSubject<Array<Date>>;
 
     constructor()
     {
@@ -37,12 +37,12 @@ export class DateFilterService
             = new BehaviorSubject<SingleWeekInterval>(new SingleWeekInterval(new Date(), new Date()));
 
         this.daysOfCurrentWeek = new Array<Date>();
-        this.daysOfCurrentWeekObservable = new BehaviorSubject<Array<Date>>(new Array<Date>());
+        // this.daysOfCurrentWeekObservable = new BehaviorSubject<Array<Date>>(new Array<Date>());
     }
 
     public getDateFilterObservable(): BehaviorSubject<DateFilter> { return this.dateFilterObservable; }
     public getCurrentWeekObservable(): BehaviorSubject<SingleWeekInterval> { return this.currentWeekObservable; }
-    public getDaysOfCurrentWeekObservable(): BehaviorSubject<Array<Date>> { return this.daysOfCurrentWeekObservable; }
+    // public getDaysOfCurrentWeekObservable(): BehaviorSubject<Array<Date>> { return this.daysOfCurrentWeekObservable; }
 
     public setDateFilter(dateFilter: DateFilter): void
     {
@@ -55,7 +55,7 @@ export class DateFilterService
             this.currentWeekObservable.next(this.weekDateIntervals[this.currentWeekIndex]);
 
             this.daysOfCurrentWeek = this.currentWeekObservable.getValue().calculateDaysOfCurrentWeek();
-            this.daysOfCurrentWeekObservable.next(this.daysOfCurrentWeek);
+            // this.daysOfCurrentWeekObservable.next(this.daysOfCurrentWeek);
 
             console.log(`setDateFilter year: ${dateFilter.year}`);
             console.log(`setDateFilter month: ${dateFilter.month}`);
