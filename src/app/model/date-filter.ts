@@ -1,6 +1,5 @@
-import { Invitation } from "./invitation";
-import { MeetingAppointment } from "./meeting-appointment";
-import { OutOfOfficeEvent } from "./out-of-office-event";
+import { Invitation, MeetingAppointment, OutOfOfficeEvent } from "./events";
+
 
 export interface DateFilter
 {
@@ -9,10 +8,68 @@ export interface DateFilter
     weekIndex: number; // from 0 to 5
 }
 
-export interface SingleWeekInterval
+export class SingleWeekInterval
 {
-    weekStart: Date; // the first day of week, could be different tha Monday
-    weekEnd: Date; // the last day of the week, could be different than Sunday
+    private weekStart: Date; // the first day of week, could be different tha Monday
+    private weekEnd: Date; // the last day of the week, could be different than Sunday
+
+    constructor(weekStart: Date, weekEnd: Date)
+    {
+        if(weekStart != null && weekEnd != null)
+        {
+            this.weekStart = weekStart;
+            this.weekEnd = weekEnd;
+        }
+        else
+        {
+            this.weekStart = new Date();
+            this.weekEnd = new Date();
+        }
+    }
+
+    public setStart(weekStart: Date): void
+    {
+        if(weekStart != null)
+            this.weekStart = weekStart;
+    }
+
+    public setEnd(weekEnd: Date): void
+    {
+        if(weekEnd != null)
+            this.weekEnd = weekEnd;
+    }
+
+    public getStart(): Date { return this.weekStart; }
+    public getEnd(): Date { return this.weekEnd; }
+
+    public calculateNumOfDays(): number
+    {
+        const numberOfDays
+                = 1 + Math.round((this.weekEnd.getTime() - this.weekStart.getTime()) / (1000 * 3600 * 24));
+        // console.log(`number of days in week: ${numberOfDays}`);
+
+        return numberOfDays;
+    }
+
+    public calculateDaysOfCurrentWeek(): Array<Date>
+    {
+        const numberOfDays = this.calculateNumOfDays();
+        const startDaysOfCurrentWeek: Array<Date> = new Array<Date>(numberOfDays);
+
+        let currentWeekFirstDay: Date = new Date(this.weekStart);
+
+        for(let i=0; i<numberOfDays; i++)
+        {
+            currentWeekFirstDay = new Date(this.weekStart);
+            currentWeekFirstDay.setDate(this.weekStart.getDate() + i); // calculate the first day of current week 
+
+            startDaysOfCurrentWeek[i] = currentWeekFirstDay; // assign first day to arrays of dates
+        }
+
+        // console.log(startDaysOfCurrentWeek);
+        
+        return startDaysOfCurrentWeek;
+    }
 }
 
 export class SingleDayHostedAppointments
