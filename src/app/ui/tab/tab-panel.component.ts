@@ -36,5 +36,4 @@ export class TabPanelComponent
         this.activeTabIndex = tabIndex;
         console.log(`tab activated: ${tabIndex}`);
     }
-
 }
