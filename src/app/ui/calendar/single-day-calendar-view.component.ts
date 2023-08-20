@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MeetingAppointment } from '../../model/events';
 import { Invitation } from '../../model/events';
 import { OutOfOfficeEvent } from '../../model/events';
@@ -9,6 +9,7 @@ import { SingleDayHostedAppointments } from '../../model/date-filter';
   selector: 'single-day-calendar-view',
   template: `
     <div class="main-container">
+        <div>day index: {{dayOfweekIndex}}</div>
         <div class="date"></div>
         <div *ngFor="let hostedAppointment of hostedAppointmentArray; let i = index">A</div>
         <div *ngFor="let acceptedInvitation of acceptedInvitationArray; let i = index"></div>
@@ -20,8 +21,8 @@ import { SingleDayHostedAppointments } from '../../model/date-filter';
 })
 export class SingleDayCalendarViewComponent implements OnInit
 {
-    // @Input() dayOfweek: number;
-    dayOfweek: number = 0;
+    @Input() dayOfweekIndex: number = 0;
+    // dayOfweek: number = 0;
     protected hostedAppointmentArray: Array<MeetingAppointment>;
     protected acceptedInvitationArray: Array<Invitation>;
     protected outOfOfficeEventArray: Array<OutOfOfficeEvent>;
@@ -38,7 +39,7 @@ export class SingleDayCalendarViewComponent implements OnInit
         this.eventService.getHostedAppointmentsByWeekDaysObservable()
                         .subscribe( (singleDayAppointments: Array<SingleDayHostedAppointments>) =>
                             {
-                                this.hostedAppointmentArray = singleDayAppointments[this.dayOfweek].getArray();
+                                this.hostedAppointmentArray = singleDayAppointments[this.dayOfweekIndex].getArray();
                             }
                         );
     }
