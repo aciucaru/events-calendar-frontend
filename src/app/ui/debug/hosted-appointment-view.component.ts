@@ -18,6 +18,7 @@ import { EventsService } from '../../service/events.service';
   selector: 'hosted-appointment-view',
   template: `
     <div class="main-container">
+        <p>Hosted appointments</p>
         <table class="data-table">
             <thead class="table-header">
                 <tr>

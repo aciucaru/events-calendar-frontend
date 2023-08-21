@@ -17,6 +17,7 @@ import { Invitation } from '../../model/events';
   selector: 'invitations-view',
   template: `
     <div class="main-container">
+        <p>Invitations</p>
         <table class="data-table">
             <thead class="table-header">
                 <tr>

@@ -8,6 +8,7 @@ import { DateFilterService } from '../../service/date-filter.service';
   selector: 'out-of-office-view',
   template: `
     <div class="main-container">
+        <p>Out of office events</p>
         <table class="data-table">
             <thead class="table-header">
                 <tr>
