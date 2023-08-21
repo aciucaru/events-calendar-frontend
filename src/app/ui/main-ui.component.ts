@@ -5,10 +5,11 @@ import { Component } from '@angular/core';
   template: `
     <div class="main-container">
         <top-toolbar></top-toolbar>
-        <!-- <hosted-appointment-view></hosted-appointment-view> -->
-        <!-- <invitations-view></invitations-view> -->
-        <!-- <out-of-office-view></out-of-office-view> -->
-        <user-calendar-view></user-calendar-view>
+        <new-meeting-form></new-meeting-form>
+        <hosted-appointment-view></hosted-appointment-view>
+        <invitations-view></invitations-view>
+        <out-of-office-view></out-of-office-view>
+        <!-- <user-calendar-view></user-calendar-view> -->
         <!-- <tab-panel>
             <tab-item>A</tab-item>
             <tab-item>B</tab-item>
