@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MeetingService } from 'src/app/service/meeting.service';
+import { EventsService } from 'src/app/service/events.service';
 
 @Component({
   selector: 'new-meeting-form',
@@ -25,14 +25,18 @@ import { MeetingService } from 'src/app/service/meeting.service';
 })
 export class NewMeetingFormComponent
 {
-    private title: string = "";
-    private description: string = "";
-    private startDate: Date = new Date();
-    private endDate: Date = new Date();
+    
+    private title: string;
+    private description: string;
+    private startDate: Date;
+    private endDate: Date;
 
-    public constructor(private meetingService: MeetingService)
+    public constructor(private eventsService: EventsService)
     {
-
+        this.title = "";
+        this.description = "";
+        this.startDate = new Date();
+        this.endDate = new Date();
     }
 
     protected onTitleChange(event: Event): void
@@ -65,6 +69,8 @@ export class NewMeetingFormComponent
 
     protected onMeetingCreate(event: Event): void
     {
-        
+        this.eventsService.storeMeetingWithAppointment(this.title, this.description, this.startDate, this.endDate);
+
+        console.log('onMeetingCreate');
     }
 }
