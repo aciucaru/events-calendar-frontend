@@ -222,4 +222,66 @@ export class EventsService
                             }
                         );
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    public storeMeetingWithAppointment(meetingTitle: string,
+                                        meetingDescription: string,
+                                        startDate: Date,
+                                        endDate: Date): void
+    {
+        const startDateString = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
+        const endDateString = `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDate()}`;
+
+        const JSONBody =
+        {
+            "host_user_id_fk": this.currentUser.id,
+            "location_id_fk": 1, // always the same location, for simplicity
+            "title": meetingTitle,
+            "description": meetingDescription,
+            "start": startDateString,
+            "end": endDateString
+        };
+
+        let apiUrl = `http://127.0.0.1:8001/api/meeting`;
+
+        const requestObservable = this.httpClient.post(apiUrl, JSONBody);
+        // very important: Angular HttpClient POST only works AFTER subscribing to it
+        requestObservable.subscribe( (response: Object) => console.log('storeMeetingWithAppointment: POST request made'));
+    }
+
+    /* This method updates the appointment of a meeting, by creating a new MeetingAppointment object
+    in the database and assigning it to the specified meeting. The new appointment becomes the active one,
+    and the last appointment of the meeting becomes inactive, obsolete ('active' => 0).
+    The JSON object corresponding to the new MeetingAppointment looks like this:
+    {
+        "id": 20, // ignored, unnecessary
+        "meeting_id_fk": 1, // ignored
+        "active": 1, // ignored
+        "start": "2023-08-07 12:45:00",
+        "end": "2023-08-07 13:45:00"
+    } */
+    public updateAppointment(
+                                meetingId: number,
+                                startDate: Date,
+                                endDate: Date
+                            ): void
+    {
+        const startDateString = `${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`;
+        const endDateString = `${endDate.getFullYear()}-${endDate.getMonth()+1}-${endDate.getDate()}`;
+
+        const JSONBody =
+        {
+            "id": 1, // always 1, because it's ignored anyway
+            "meeting_id_fk": meetingId, // always the same location, for simplicity
+            "active": 1, // always 1, because the latest appointment is always the active one
+            "start": startDateString,
+            "end": endDateString
+        };
+
+        let apiUrl = `http://127.0.0.1:8001/api/meeting/${meetingId}/appointment`;
+
+        const requestObservable = this.httpClient.put(apiUrl, JSONBody);
+        requestObservable.subscribe( (response: Object) => console.log('updateAppointment: PUT request made'));
+    }
 }
