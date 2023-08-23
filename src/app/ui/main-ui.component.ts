@@ -5,7 +5,8 @@ import { Component } from '@angular/core';
   template: `
     <div class="main-container">
         <top-toolbar></top-toolbar>
-        <new-meeting-form></new-meeting-form>
+        <!-- <new-meeting-form></new-meeting-form> -->
+        <update-meeting-form></update-meeting-form>
         <hosted-appointment-view></hosted-appointment-view>
         <invitations-view></invitations-view>
         <out-of-office-view></out-of-office-view>
