@@ -17,6 +17,8 @@ import { OutOfOfficeViewComponent } from './ui/debug/out-of-office-view.componen
 import { UserCalendarViewComponent } from './ui/calendar/user-calendar-view.component';
 import { SingleDayCalendarViewComponent } from './ui/calendar/single-day-calendar-view.component';
 import { NewMeetingFormComponent } from './ui/forms/new-meeting-form.component';
+import { UpdateMeetingFormComponent } from './ui/forms/update-meeting-form.component';
+import { AddInvitationFormComponent } from './ui/forms/add-invitation-form.component';
 
 
 @NgModule({
@@ -34,6 +36,8 @@ import { NewMeetingFormComponent } from './ui/forms/new-meeting-form.component';
     UserCalendarViewComponent,
     SingleDayCalendarViewComponent,
     NewMeetingFormComponent,
+    UpdateMeetingFormComponent,
+    AddInvitationFormComponent,
   ],
   imports: [
     BrowserModule,
